@@ -1,0 +1,1111 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body{
+    background-color: #f4f4f9;
+    color: #333;
+}
+
+
+header{
+    position: initial;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height:100px;
+    padding: 20px 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 99;
+    background-color: #FFD858;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    max-width: 100px; /* Adjust the size of the logo image */
+    height: auto;
+}
+
+.navigation {
+    display: flex;
+    align-items: center;
+}
+
+.navigation a {
+    position: relative;
+    font-size: 1.1em;
+    color: #270b39;
+    text-decoration: none;
+    font-weight: 500;
+    margin-left: 40px;
+}
+
+.navigation a::after{
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    width: 100%;
+    height:3px;
+    background: #fff;
+    border-radius: 5px;
+    transform-origin: right;
+    transform: scaleX(0);
+    transition: transform .5s;
+}
+
+.navigation a:hover::after{
+    transform-origin: left;
+    transform: scaleX(1);
+}
+
+.navigation .btnLogin-popup{
+    width: 130px;
+    height: 50px;
+    background: transparent;
+    border: 2px solid #fff;
+    outline: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.1em;
+    color: #fff;
+    font-weight: 500;
+    margin-left: 40px;
+    transition: .5s;
+}
+
+.navigation .btnLogin-popup:hover{
+    background: #fff;
+    color: #162938;
+}
+
+/* Hero Section */
+.hero-section {
+    height: 100vh;
+    background: url('back.png') no-repeat center center;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+}
+.hero-section{
+    margin-bottom: 20px;
+}
+
+
+.wrapper{
+    position: relative;
+    width: 350px;
+    height: 400px;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, .5);
+    border-radius: 20px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 30px rgba(0, 0, 0, .5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    transform: scale(0);
+    transition: transform .5s ease, height .2s ease;
+}
+
+.wrapper.active-popup{
+    transform: scale(1);
+}
+
+.wrapper.active{
+    height: 450px;
+}
+
+.wrapper .form-box{
+    width: 100%;
+    padding: 40px;
+}
+
+.wrapper .form-box.login{
+    transition: transform .18s ease;
+    transform: translateX(0);
+}
+
+.wrapper.active .form-box.login{
+    transition: none;
+    transform: translateX(-350px);
+}
+
+.wrapper .form-box.register{
+    position: absolute;
+    transition: none;
+    transform: translate(350px);
+}
+
+.wrapper.active .form-box.register{
+    transition: transform .18s ease;
+    transform: translateX(0);
+}
+
+.wrapper .icon-close{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 45px;
+    height: 45px;
+    background: #162938;
+    font-size: 2em;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom-left-radius: 20px;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.form-box h2{
+    font-size: 2em;
+    color: #162938;
+    text-align: center;
+}
+
+.input-box{
+    position: relative;
+    width: 100%;
+    height: 50px;
+    border-bottom: 2px solid #162938;
+    margin: 30px 0;
+}
+
+.input-box label{
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+    font-size: 1em;
+    color: #162938;
+    font-weight: 500;
+    pointer-events: none;
+    transition: .5s;
+}
+
+.input-box input:focus~label,
+.input-box input:valid~label {
+    top: -5px;
+}
+
+.input-box input{
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 1em;
+    color: #162938;
+    font-weight: 600;
+    padding: 0 35px 0 5px;
+}
+
+.input-box .icon{
+    position: absolute;
+    right: 8px;
+    font-size: 1.2em;
+    color:#162938;
+    line-height: 57px;
+}
+
+.remember-forgot{
+    font-size: .9em;
+    color: #162938;
+    font-weight: 500;
+    margin: -15px 0 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.remember-forgot label input{
+    accent-color: #162938;
+    margin-right: 3px;
+}
+
+.remember-forgot a{
+    color: #162938;
+    text-decoration: none;
+}
+
+.remember-forgot a:hover{
+    text-decoration: underline;
+}
+
+.btn{
+    width: 100%;
+    height: 45px;
+    background: #162938;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    color: #fff;
+    font-weight: 500;
+}
+
+.login-register{
+    font-size: .9em;
+    color: #162938;
+    text-align: center;
+    font-weight: 500;
+    margin: 25px 0 10px;
+}
+
+.login-register p a{
+    color:#162938;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.login-register p a:hover{
+    text-decoration: underline;
+}
+
+
+/* General styling for the study section */
+.study-section {
+    background-color: #f4f4f4;
+    text-align: center;
+    position: relative;
+    padding: 15px 0; /* Added padding for better spacing */
+    margin-top: 0;
+}
+
+.study-heading {
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+    color: #333;
+    text-transform: uppercase;
+    /*font-style: italic;*/
+}
+
+/* Card Section */
+.card-section {
+    display: flex;
+    flex-wrap: wrap; /* Allows wrapping to the next row */
+    justify-content: center; /* Centers the cards */
+    gap: 30px; /* Space between the cards */
+}
+
+/* Individual Card Styling */
+.card {
+    width: 280px;
+    height: auto;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    text-align: center;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.card:hover {
+    transform: scale(1.05); /* Zoom-in effect */
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Card Image Styling */
+.card .image {
+    background-color: #ffffff;
+    padding: 15px;
+}
+
+.card .image img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%; /* Circular image */
+    display: block;
+    margin: 0 auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Card Content Styling */
+.card figcaption {
+    padding: 15px;
+}
+
+.card h3 {
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.card h3 a {
+    text-decoration: none;
+    color: #333;
+    transition: color 0.3s ease;
+}
+
+.card h3 a:hover {
+    color: #e59620; /* Highlight link color on hover */
+}
+
+.card p {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+/* Button Styling */
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #e59620;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.button:hover {
+    background-color: #c47d1a; /* Slightly darker orange */
+    transform: scale(1.05); /* Slight zoom effect */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .card {
+        width: 90%; /* Cards will span full width of the screen on smaller devices */
+        margin: 0 auto;
+    }
+
+    .card-section {
+        gap: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .study-heading {
+        font-size: 2rem; /* Adjust heading size for small screens */
+    }
+
+    .card .image img {
+        width: 100px; /* Slightly smaller images */
+        height: 100px;
+    }
+
+    .button {
+        font-size: 0.9rem; /* Smaller button text */
+        padding: 8px 15px;
+    }
+}
+
+
+/*test*/
+
+.tests {
+    margin-top: 50px;
+    margin-bottom: 20px; /* Adjust margin-bottom */
+    background-color: #cfb7b7; /* Matches the study section color */
+    padding: 15px 0; /* Optional: Adds some padding for a better look */
+    text-align: center; /* Ensures text alignment */
+}
+.test-card .image img {
+    width: 100px;
+    height: 100px;
+}
+
+.tests-heading{
+    font-size: 2.5rem;
+    color: #333;
+    margin-top: 20px; /* Adjusts the margin-bottom */
+    font-style: italic;
+}
+
+.tests-section{
+    background-color: #d69191;
+    padding-bottom: 20px;
+}
+
+
+.test-list {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 20px;
+   justify-content: space-around;
+   background-color: #d69191; /* Keeps the test cards separate visually */
+   padding: 20px; /* Padding inside the test section */
+   border-radius: 8px; /* Smoothens edges */
+}
+
+  
+.test-card {
+   background-color: #ffffff;
+   border: 1px solid #ddd;
+   border-radius: 8px;
+   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+   padding: 20px;
+   width: 250px;
+   text-align: center;
+   transition: transform 0.3s;
+}
+  
+.test-card h3 {
+   margin-bottom: 10px;
+   font-size: 18px;
+   color: #333;
+}
+  
+.test-card p {
+   font-size: 14px;
+   color: #666;
+   margin-bottom: 20px;
+}
+  
+.test-card a.btn {
+   display: inline-block;
+   padding: 10px 20px;
+   background-color: #eab012;
+   color: white;
+   text-decoration: none;
+   border-radius: 5px;
+   transition: background-color 0.3s;
+}
+  
+.test-card a.btn:hover {
+   background-color: #0056b3;
+}
+  
+.test-card:hover {
+   transform: translateY(-5px);
+}
+.test-card .image img{
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.test-list{
+   margin-bottom: 50px;
+}
+
+
+.achievers-section {
+    margin-top: 0px;
+}
+.achievers-section {
+    padding: 50px 20px;
+    background-color: #447270;
+    text-align: center;
+    position: relative;
+}
+
+.achievers-heading {
+    font-size: 2rem;
+    margin-bottom: 30px;
+    color: #2a1e1e;
+}
+
+.achievers-slider {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    height: 300px; /* Adjust height based on content */
+}
+
+.achiever-card {
+    position: absolute;
+    width: 100%;
+    opacity: 0;
+    z-index: 0;
+    transition: opacity 1s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.achiever-card img {
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    margin-bottom: 15px;
+}
+
+
+.achiever-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #131010;
+}
+
+.achiever-card p {
+    font-size: 1rem;
+    color: #000000;
+    margin-bottom: 10px;
+    font-weight: 300;
+}
+
+
+/* Active card styling */
+.achiever-card.active {
+    opacity: 1;
+    z-index: 1;
+}
+
+
+/*about section*/
+.about-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    background-color: #fff;
+  }
+  
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    max-width: 1200px;
+  }
+  
+  .about-content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  
+.logo-ab{
+    position: relative;
+    overflow: hidden; /* Ensures smooth transition */
+}
+
+.logo-ab img {
+    width: 400px;
+    height: auto;
+    position: relative;
+    bottom: -100px; /* Start off-screen */
+    animation: slide-in 2s ease-out forwards; /* Apply animation */
+}
+  
+  .about-text {
+    max-width: 600px;
+  }
+  
+  .about-text h2 {
+    color: #0a243f;
+    font-size: 28px;
+    margin-bottom: 10px;
+    padding-left: 230px;
+  }
+  
+  .about-text h1 {
+    font-size: 46px;
+    color: #004680;
+    margin-bottom: 15px;
+    padding-left: 100px;
+  }
+  
+  .about-text p {
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 12px;
+    padding-left: 10px;
+    color: #000000;
+    text-align: center; /* Justify text */
+  }
+  
+  .about-text ul {
+    list-style: none;
+    padding-left: 50px;
+    padding-top: 20px;
+    margin-bottom: 20px;
+  }
+  
+.about-text ul li {
+   font-size: 18px;
+   margin-bottom: 5px;
+   color: #ff6347;
+}
+  
+
+/* General Footer Styling */
+#footer {
+    background-color: #333; /* Dark background */
+    color: #fff; /* White text */
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    max-width: 1200px;
+    margin-bottom: 20px;
+}
+
+.footer-section {
+    flex: 1;
+    padding: 10px;
+}
+  
+.footer-section h4, 
+.footer-section h3 {
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+    color: #b9b9b9;
+}
+
+.footer-section a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.footer-section a:hover {
+    text-decoration: underline;
+}
+
+
+.social-media-links {
+    display: flex;
+    align-items: center; /* Center align vertically */
+}
+  
+.social-media-links h3 {
+    margin-bottom: 45px; /* Space between "Follow Us" and the icons */
+    font-size: 16px;
+    color: #ffffff;
+}
+  
+.social-btn {
+    margin-left: 20px;
+    display: inline-flex;
+    align-items: center;
+    font-size: 30px;
+    color: #333;
+    text-decoration: none;
+    transition: color 0.3s;
+    line-height: 1.5;
+}
+
+.social-btn i {
+    margin-right: 10px;
+    color: #d9534f; /* Red for the location icon */
+}
+  
+.social-btn:hover {
+   color: #ec9e21; /* Change color on hover */
+}
+
+
+
+/* Copyright Styling */
+.footer-copyright {
+    text-align: center;
+    margin-top: 10px;
+    width: 100%;
+    font-size: 0.9rem;
+    border-top: 1px solid #555;
+    padding-top: 10px;
+}
+
+.copyright {
+    display: block;
+    font-size: 1rem;
+}
+
+
+
+/* Keyframe for slide-in effect */
+@keyframes slide-in {
+    0% {
+      bottom: -100px; /* Start off-screen */
+      opacity: 0;
+    }
+    100% {
+      bottom: 0; /* Final position */
+      opacity: 1;
+    }
+  }
+
+
+/* General styling for the study section */
+.team-section {
+    background: url('teach.webp');
+    text-align: center;
+    position: relative;
+    padding: 10px 0; /* Added padding for better spacing */
+    margin-top: 0px;
+}
+
+.team-heading {
+    margin-bottom: 20px;
+    font-size: 2.5rem;
+    color: #333;
+    text-transform: uppercase;
+}
+
+/* Card Section */
+.our-section {
+    display: flex;
+    flex-wrap: wrap; /* Allows wrapping to the next row */
+    justify-content: center; /* Centers the cards */
+    gap: 30px; /* Space between the cards */
+}
+
+/* Individual Card Styling */
+.ourteam-card {
+    width: 230px;
+    height: auto;
+    border: 1px solid #ddd;
+    border-radius: 5%;
+    overflow: hidden;
+    text-align: center;
+    background-color: blur(255, 255, 255);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /*cursor: pointer;*/
+}
+
+.ourteam-card:hover {
+    transform: scale(1.05); /* Zoom-in effect */
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.5);
+}
+
+/* Card Image Styling */
+.ourteam-card .image {
+    background-color: blur(255, 255, 255);
+    padding: 10px;
+}
+
+.ourteam-card .image img {
+    width: 200px;
+    height: 200px;
+    border-radius: 15%; /* Circular image */
+    display: block;
+    margin: 0 auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+}
+
+/* Card Content Styling */
+.ourteam-card figcaption {
+    padding: 15px;
+}
+
+.ourteam-card h3 {
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.ourteam-card h3 a {
+    text-decoration: none;
+    color: #333;
+    transition: color 0.3s ease;
+}
+
+.ourteam-card h3 a:hover {
+    color: #e59620; /* Highlight link color on hover */
+}
+
+.ourteam-card p {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .ourteam-card {
+        width: 90%; /* Cards will span full width of the screen on smaller devices */
+        margin: 0 auto;
+    }
+
+    .our-section {
+        gap: 40px;
+    }
+}
+
+@media (max-width: 480px) {
+    .team-heading {
+        font-size: 2rem; /* Adjust heading size for small screens */
+    }
+
+    .ourteam-card .image img {
+        width: 100px; /* Slightly smaller images */
+        height: 100px;
+    }
+
+}
+
+/*toppers notes*/
+.section {
+    text-align: center;
+    margin: 20px;
+  }
+
+  .topper {
+    font-size: 40px;
+    font-weight: bold;
+    color: #333;
+  }
+
+  p {
+    color: #e70808;
+  }
+
+  
+.profile-card {
+    width: 300px;
+    background: #ffc107; /* Yellow background */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    position: relative;
+    padding: 20px 15px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.profile-card:hover {
+   /* transform: scale(1.05); /* Zoom-in effect */
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+    transform: translateX(-5px);
+}
+  
+.pin {
+    width: 20px;
+    height: 20px;
+    background: red;
+    border-radius: 50%;
+    position: absolute;
+    top: 10px;
+    left: calc(50% - 10px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+  
+.image-container {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 5px solid #fff;
+    background: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+  
+.profile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+  
+h2 {
+    font-size: 20px;
+    color: #000000;
+    font-weight: bold;
+    margin: 10px 0 5px;
+}
+  
+h3 {
+    font-size: 16px;
+    color: #555;
+    font-weight: bold;
+    margin: 5px 0;
+}
+  
+h4 {
+    font-size: 14px;
+    color: #555;
+    margin: 5px 0 15px;
+}
+  
+.quote {
+    font-size: 13px;
+    color: #000000;
+    font-style: italic;
+    line-height: 1.5;
+}
+
+/* Add spacing between cards */
+.row {
+    display: flex;
+    flex-wrap: wrap; /* Allows wrapping of cards if necessary */
+    justify-content: center; /* Center-align the cards */
+    gap: 40px; /* Adds a gap of 20px between cards */
+    margin-bottom: 20px; /* Adds space between rows */
+    margin-top: 20px;
+}
+
+
+
+/* YouTube Video Section Styling */
+.youtube-section {
+    padding: 50px  20px;
+    background-color: #ffffff; /* Light background for contrast */
+    text-align: center;
+}
+
+.youtube-section h2 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #333; /* Dark text color for readability */
+    margin-bottom: 20px;
+    text-decoration: underline;
+}
+
+.youtube-video-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 20px;
+}
+
+.youtube-section a {
+    position: relative;
+    font-size: 1.1em;
+    color: #270b39;
+    text-decoration: none;
+    font-weight: 500;
+    margin-left: 40px;
+    background-color: transparent !important;
+}
+
+.youtube-section a::after{
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    width: 100%;
+    height:3px;
+    background: #000000;
+    border-radius: 5px;
+    transform-origin: right;
+    transform: scaleX(0);
+    transition: transform .5s;
+}
+
+.youtube-section a:hover::after{
+    transform-origin: left;
+    transform: scaleX(1);
+}
+
+
+
+.youtube-video-container iframe {
+    width: 80%;
+    max-width: 400px; /* Restricts width on larger screens */
+    height: 180px; /* 16:9 aspect ratio */
+    border: none;
+    border-radius: 10px; /* Rounded corners for a modern look */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+    background-color: #000; /* Black background for better video focus */
+    overflow: hidden; /* Hides scrollbar */
+}
+
+
+/* YouTube Video Section Styling */
+.youtube-video-container {
+    display: block; /* Change this to block to stack iframe and description vertically */
+    text-align: center; /* Center-align both iframe and text */
+    margin-bottom: 30px; /* Adds some space between each video */
+}
+
+
+
+/* YouTube Video Description Styling */
+.video-description {
+    font-size: 1rem;
+    color: #333; /* Dark text color for readability */
+    margin-top: 10px;
+    text-align: center; /* Centers the text */
+    font-weight: normal;
+    line-height: 1.5;
+    max-width: 400px; /* Keeps the text aligned with the iframe */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Optional: Add responsiveness for small screens */
+@media (max-width: 768px) {
+    .video-description {
+        font-size: 0.9rem; /* Slightly smaller text on mobile */
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .youtube-video-container iframe {
+        width: 100%; /* Full width on smaller screens */
+        height: 240px; /* Adjust height for smaller screens */
+    }
+}
+
+.notes-download{
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 30px;
+}
+
+
+.pdf-list {
+    margin-bottom: 20px;
+}
+
+.pdf-btn {
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.pdf-btn:hover {
+    background-color: #45a049;
+}
+
+.notes-section {
+    margin-top: 20px;
+    display: none;  /* Initially hidden */
+    width: 100%;
+    max-width: 700px;
+    text-align: center;
+    margin: 20px auto;
+}
+
+#download-btn {
+    background-color: #f44336;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#download-btn:hover {
+    background-color: #e53935;
+}
