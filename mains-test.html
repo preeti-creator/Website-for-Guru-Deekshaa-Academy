@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KAS English Quiz</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #36d1dc, #5b86e5);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #fff;
+        }
+
+        .quiz-container, .welcome-container {
+            max-width: 800px;
+            width: 100%;
+            background: #fff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            color: #333;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #5b86e5;
+        }
+
+        .question {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .option-group {
+            margin: 20px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label {
+            display: block;
+            padding: 15px 20px;
+            margin: 10px 0;
+            width: 100%;
+            max-width: 500px;
+            background-color: #f1f1f1;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        input[type="radio"] {
+            display: none;
+        }
+
+        label:hover, input[type="radio"]:checked + label {
+            background-color: #36d1dc;
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .submit-btn {
+            background: linear-gradient(to right, #36d1dc, #5b86e5);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 30px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin: 10px;
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(to right, #ff758c, #ff7eb3);
+        }
+
+        .progress-bar {
+            height: 15px;
+            background-color: #36d1dc;
+            border-radius: 10px;
+            transition: width 0.4s ease;
+            margin-top: 20px;
+        }
+
+        .progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .timer {
+            font-size: 1.5em;
+            margin-top: 15px;
+            color: #ff0844;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="welcome-container">
+    <h1>Welcome to Mains Quiz</h1>
+    <p>Test your knowledge and improve your skills!</p>
+    <button class="submit-btn" onclick="startQuiz()">Start Test</button>
+</div>
+
+<div class="quiz-container hidden">
+    <div class="progress-container">
+        <div class="progress-bar" id="progress-bar" style="width: 0%;"></div>
+    </div>
+
+    <div class="question" id="question-text">Question will appear here</div>
+
+    <div class="timer" id="timer">30s</div>
+
+    <div class="option-group" id="option-group"></div>
+
+    <button class="submit-btn" id="next-btn" onclick="nextQuestion()" disabled>Next Question</button>
+    <button class="submit-btn" id="skip-btn" onclick="skipQuestion()">Skip Question</button>
+</div>
+
+<script>
+    const quizData = [
+        { question: "Who is known as the Father of the Indian Constitution?", options: ["Mahatma Gandhi", "Jawaharlal Nehru", "B. R. Ambedkar", "Sardar Patel"], correct: 2 },
+        { question: "What is the capital of Karnataka?", options: ["Mysore", "Bangalore", "Mangalore", "Hubli"], correct: 1 },
+        { question: "Which year did India gain independence?", options: ["1947", "1950", "1935", "1960"], correct: 0 },
+        { question: "Which is the highest civilian award in India?", options: ["Bharat Ratna", "Padma Bhushan", "Padma Shri", "Gallantry Award"], correct: 0 }
+    ];
+
+    let currentQuestion = 0;
+    let timer;
+    let timeLeft = 30;
+    let score = 0;
+
+    function startQuiz() {
+        document.querySelector('.welcome-container').classList.add('hidden');
+        document.querySelector('.quiz-container').classList.remove('hidden');
+        loadQuestion();
+    }
+
+    function loadQuestion() {
+        const questionData = quizData[currentQuestion];
+        document.getElementById('question-text').textContent = questionData.question;
+
+        const optionGroup = document.getElementById('option-group');
+        optionGroup.innerHTML = '';
+
+        questionData.options.forEach((option, index) => {
+            const optionHTML = `<input type="radio" id="option${index}" name="option" value="${index}">
+                                <label for="option${index}">${option}</label>`;
+            optionGroup.innerHTML += optionHTML;
+        });
+
+        document.getElementById('next-btn').disabled = true;
+        document.getElementById('timer').textContent = '30s';
+        timeLeft = 30;
+
+        document.querySelectorAll('input[name="option"]').forEach(input => {
+            input.addEventListener('change', () => document.getElementById('next-btn').disabled = false);
+        });
+
+        document.getElementById('progress-bar').style.width = ((currentQuestion + 1) / quizData.length) * 100 + '%';
+        startTimer();
+    }
+
+    function startTimer() {
+        timer = setInterval(() => {
+            timeLeft--;
+            document.getElementById('timer').textContent = timeLeft + 's';
+            if (timeLeft <= 0) skipQuestion();
+        }, 1000);
+    }
+
+    function nextQuestion() {
+        clearInterval(timer);
+        const selectedOption = document.querySelector('input[name="option"]:checked');
+        if (selectedOption && parseInt(selectedOption.value) === quizData[currentQuestion].correct) {
+            score++;
+        }
+        currentQuestion++;
+        if (currentQuestion < quizData.length) {
+            loadQuestion();
+        } else {
+            showResults();
+        }
+    }
+
+    function skipQuestion() {
+        clearInterval(timer);
+        nextQuestion();
+    }
+
+    function showResults() {
+        document.querySelector('.quiz-container').innerHTML = `
+            <h1>Quiz Completed!</h1>
+            <p>Your score: ${score} / ${quizData.length}</p>
+            <button class="submit-btn" onclick="restartQuiz()">Restart Quiz</button>
+            <button class="submit-btn" onclick="goToMainPage()">Main Page</button>
+            <button class="submit-btn" onclick="showAnswers()">View Correct Answers</button>
+        `;
+    }
+
+    function showAnswers() {
+        let resultHTML = `<h1>Correct Answers</h1>`;
+        
+        quizData.forEach((data, index) => {
+            resultHTML += `<div class="question-result">
+                <p><strong>Q${index + 1}: ${data.question}</strong></p>
+                <p><span style="color: green;">Correct Answer: ${data.options[data.correct]}</span></p>
+            </div><hr>`;
+        });
+    
+        resultHTML += `<button class="submit-btn" onclick="restartQuiz()">Restart Quiz</button>`;
+        document.querySelector('.quiz-container').innerHTML = resultHTML;
+    }
+    function goToMainPage() {
+        location.href = 'index.html'; // Replace 'index.html' with the URL of the main page
+
+    function restartQuiz() {
+        score = 0;
+        currentQuestion = 0;
+        clearInterval(timer);
+        document.querySelector('.quiz-container').classList.add('hidden');
+        document.querySelector('.welcome-container').classList.remove('hidden');
+    }
+}
+</script>
+
+</body>
+</html>

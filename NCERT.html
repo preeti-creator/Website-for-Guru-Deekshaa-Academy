@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KAS NCERT Notes</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 1.8em;
+        }
+
+        /* Content Container */
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* PDF List Styles */
+        .pdf-list {
+            margin-top: 20px;
+            padding: 0;
+            list-style: none;
+        }
+        .pdf-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .pdf-item:hover {
+            background-color: #e8e8e8;
+        }
+        .pdf-item a {
+            text-decoration: none;
+            color: #007BFF;
+            font-weight: bold;
+        }
+        .pdf-item a:hover {
+            text-decoration: underline;
+        }
+        .pdf-item button {
+            padding: 5px 10px;
+            font-size: 0.9em;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .pdf-item button:hover {
+            background-color: #45a049;
+        }
+
+        /* PDF Viewer Section */
+        iframe {
+            width: 100%;
+            height: 500px;
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1> NCERT Notes</h1>
+    </header>
+
+    <div class="container">
+        <p>Here you can read and download NCERT notes for KAS (Karnataka Administrative Services) preparation:</p>
+        
+        <ul class="pdf-list">
+            <li class="pdf-item">
+                <a href="6th-english-socialscience-02_440c84cc-0526-4892-bf10-a014d938d834.pdf" target="pdf-frame">6th Social Science P2</a>
+                <button onclick="downloadPDF('6th-english-socialscience-02_440c84cc-0526-4892-bf10-a014d938d834.pdf')">Download</button>
+            </li>
+            <li class="pdf-item">
+                <a href="6th-english-socialscience-01_ef13e0d4-b026-4ba4-8742-27d6c12f0067.pdf" target="pdf-frame">6th Social Science P1</a>
+                <button onclick="downloadPDF('6th-english-socialscience-01_ef13e0d4-b026-4ba4-8742-27d6c12f0067.pdf')">Download</button>
+            </li>
+            <li class="pdf-item">
+                <a href="7th-english-socialscience-2_3f6a0154-7e00-4a8e-afcb-75a8d52c99e2.pdf" target="pdf-frame">7th Social Science P2</a>
+                <button onclick="downloadPDF('7th-english-socialscience-2_3f6a0154-7e00-4a8e-afcb-75a8d52c99e2.pdf')">Download</button>
+            </li>
+            <li class="pdf-item">
+                <a href="7th-english-socialscience-1_daacf03d-f790-4d72-8f95-34ab2998af01.pdf" target="pdf-frame">7th Social Science P1</a>
+                <button onclick="downloadPDF('7th-english-socialscience-1_daacf03d-f790-4d72-8f95-34ab2998af01.pdf')">Download</button>
+            </li>
+            <li class="pdf-item">
+                <a href="8th-english-socialscience_2b294c86-6f15-47a7-8bbc-6025173a08dd.pdf" target="pdf-frame">8th Social Science </a>
+                <button onclick="downloadPDF('8th-english-socialscience_2b294c86-6f15-47a7-8bbc-6025173a08dd.pdf')">Download</button>
+            </li>
+            <li class="pdf-item">
+                <a href="9th-english-socialscience-1_22ecafe8-4981-4e35-a98b-99b798001ef4.pdf" target="pdf-frame">9th Social Science P1 </a>
+                <button onclick="downloadPDF('9th-english-socialscience-1_22ecafe8-4981-4e35-a98b-99b798001ef4.pdf')">Download</button>
+            </li>
+            <li class="pdf-item">
+                <a href="9th-english-socialscience-2_51dda169-23cf-4e35-a071-acc264c10455.pdf" target="pdf-frame">9th Social Science P2</a>
+                <button onclick="downloadPDF('9th-english-socialscience-2_51dda169-23cf-4e35-a071-acc264c10455.pdf')">Download</button>
+            </li>
+            <li class="pdf-item">
+                <a href="Class 10th-Social Science-Eng-Part 1-www.governmentexams.co.in_00958c98-0a32-4dd3-9962-ca04cc79f872.pdf" target="pdf-frame">10th Social Science </a>
+                <button onclick="downloadPDF('Class 10th-Social Science-Eng-Part 1-www.governmentexams.co.in_00958c98-0a32-4dd3-9962-ca04cc79f872.pdf')">Download</button>
+            </li>
+        </ul>
+
+        <h2>Read the PDF here:</h2>
+        <iframe id="pdf-frame" src="" title="PDF Viewer"></iframe>
+    </div>
+
+    <footer>
+        &copy; 2024 Guru Deekshaa Academy| All rights reserved.
+    </footer>
+
+    <script>
+        // Automatically load the selected PDF into the iframe
+        const links = document.querySelectorAll('.pdf-item a[target="pdf-frame"]');
+        const iframe = document.getElementById('pdf-frame');
+
+        links.forEach(link => {
+            link.addEventListener('click', event => {
+                event.preventDefault();
+                iframe.src = event.target.href;
+            });
+        });
+
+        // Function to download PDFs
+        function downloadPDF(pdfFile) {
+            const a = document.createElement('a');
+            a.href = pdfFile;
+            a.download = pdfFile;
+            a.click();
+        }
+    </script>
+</body>
+</html>

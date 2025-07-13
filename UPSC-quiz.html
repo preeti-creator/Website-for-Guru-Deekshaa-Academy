@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UPSC Quiz</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #36d1dc, #5b86e5);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #fff;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            width: 100%;
+            background: #fff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            color: #333;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #5b86e5;
+        }
+
+        .question {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .option-group {
+            margin: 20px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label {
+            display: block;
+            padding: 15px 20px;
+            margin: 10px 0;
+            width: 100%;
+            max-width: 500px;
+            background-color: #f1f1f1;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        input[type="radio"] {
+            display: none;
+        }
+
+        label:hover, input[type="radio"]:checked + label {
+            background-color: #36d1dc;
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .submit-btn {
+            background: linear-gradient(to right, #36d1dc, #5b86e5);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 30px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin: 10px;
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(to right, #ff758c, #ff7eb3);
+        }
+
+        .progress-bar {
+            height: 15px;
+            background-color: #36d1dc;
+            border-radius: 10px;
+            transition: width 0.4s ease;
+            margin-top: 20px;
+        }
+
+        .progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .timer {
+            font-size: 1.5em;
+            margin-top: 15px;
+            color: #ff0844;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <h1>KAS English Quiz</h1>
+
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progress-bar" style="width: 0%;"></div>
+    </div>
+
+    <!-- Quiz Question -->
+    <div class="question" id="question-text">Question will appear here</div>
+
+    <!-- Timer -->
+    <div class="timer" id="timer">30s</div>
+
+    <!-- Options -->
+    <div class="option-group" id="option-group">
+        <!-- Options will be dynamically inserted here -->
+    </div>
+
+    <!-- Buttons -->
+    <button class="submit-btn" id="next-btn" onclick="nextQuestion()" disabled>Next Question</button>
+    <button class="submit-btn" id="skip-btn" onclick="skipQuestion()">Skip Question</button>
+    
+</div>
+
+<script>
+    const quizData = [
+        {
+            question: "Who is known as the Father of the Indian Constitution?",
+            options: ["Mahatma Gandhi", "Jawaharlal Nehru", "B. R. Ambedkar", "Sardar Patel"],
+            correct: 2
+        },
+        {
+            question: "What is the capital of Karnataka?",
+            options: ["Mysore", "Bangalore", "Mangalore", "Hubli"],
+            correct: 1
+        },
+        {
+            question: "Which year did India gain independence?",
+            options: ["1947", "1950", "1935", "1960"],
+            correct: 0
+        },
+        {
+            question: "Which is the highest civilian award in India?",
+            options: ["Bharat Ratna", "Padma Bhushan", "Padma Shri", "Gallantry Award"],
+            correct: 0
+        },
+        {
+            question: "Which is the highest peak in Karnataka?",
+            options: ["Mullayanagiri","Nandi Hills","Savandurga","Kodachadri"],
+            correct: 0
+        },
+        {
+            question: "Who was the founder of the Vijayanagara Empire?",
+            options: ["Devaraya II", "Krishnadevaraya", "Harihara and Bukka", "Achyuta Deva Raya"],
+            correct: 2
+        },
+        {
+            question: "The Kaveri river originates from which place?",
+            options: ["Agumbe", "Madikeri", "Brahmagiri", "Kodachadri"],
+            correct: 2
+        },
+        {
+            question: "Which is the largest district in Karnataka by area?",
+            options: ["Mysore", "Tumkur", "Belgaum", "Gulbarga"],
+            correct: 2
+        },
+        {
+            question: "When was Karnataka renamed from Mysore?",
+            options: ["1956", "1973", "1963", "1980"],
+            correct: 1
+        },
+        {
+            question: "Which dynasty built the famous Hampi temples?",
+            options: ["Chalukyas","Hoysalas","Vijayanagara","Kadambas"],
+            correct: 1
+        },
+        {
+            question: "Who was the first Chief Minister of Karnataka?",
+            options: [" D. Devaraj Urs", "Veerendra Patil", "Kengal Hanumanthaiah", "S. Nijalingappa"],
+            correct: 3
+        },
+        {
+            question: "Jog Falls is located on which river?",
+            options: ["Tungabhadra", " Kaveri", "Sharavati", " Hemavathi"],
+            correct: 2
+        },
+        {
+            question: " Which of the following is the official language of Karnataka?",
+            options: ["Hindi", "Tamil", "Telagu", "Kannada"],
+            correct: 3
+        },
+        {
+            question: "The 'Dasara' festival is associated with which city in Karnataka?",
+            options: ["Bengaluru", "Mysore", "Hampi", "Mangaluru"],
+            correct: 1
+        },
+        {
+            question:"In which year was the Bengaluru International Airport inaugurated?",
+            options:["2005","2008","2010","2012"],
+            correct:1
+        },
+        {
+            question:"Which wildlife sanctuary in Karnataka is known for its elephants?",
+            options:["Bandipur","nagarhole","Bannerghatta","Dandeli"],
+            correct:1
+        },
+        {
+            question:"The famous gommateshwara temple is located in which place?",
+            options:["badami","Shravanabelagola","belur","Hampi"],
+            correct:1
+        },
+        {
+            question:"Which port city in karnataka is known for coffee exports?",
+            options:["karwar","udupi","Mangalore","Bhatkal"],
+            correct:2
+        },
+        {
+            question:"who was the first women governor of karnataka?",
+            options:["Padmaja Naidu","Sarojini naidu","V.S Ramadevi","Margarit aiva"],
+            correct:2
+        },
+        {
+            question:"what is the primary crop grown in the districts of north karnataka?",
+            options:["Rice","wheat","Jowar","Tea"],
+            correct:2
+        },
+        {
+            question:"The Karnataka state was formed under the states reorganization act in which year?",
+            options:["1947","1950","1956","1960"],
+            correct:2
+        },
+        {
+            question:"who among the following is a kannada poet known for his work'ramayana darshanam'?",
+            options:["Kuvempu","bendre","D R bendre","masti venkatesh iyengar"],
+            correct:0
+        },
+        {
+            question:"The Ranganatithu bird sanctury is located in which river?",
+            options:["Kaveri","tungabhadra","Krishna","Sharavati"],
+            correct:0
+        },
+        {
+            question: " Which of the following is a famous folk dance of Karnataka?",
+            options: ["Kathakali", " Kuchipudi","Yakshagana", "Bharatanatyam"],
+            correct: 2
+        },
+        {
+            question: "Who is known as the Father of the Indian Constitution?",
+            options: ["Mahatma Gandhi", "Jawaharlal Nehru", "B. R. Ambedkar", "Sardar Patel"],
+            correct: 2
+        },
+        {
+            question: "Which of the following rivers does not originate in India?",
+            options: ["Brahmaputra", "Ganga", "Yamuna", "Indus"],
+            correct: 0
+        },
+        {
+            question: "The Reserve Bank of India was established in which year?",
+            options: ["1935", "1947", "1950", "1965"],
+            correct: 0
+        },
+        {
+            question: "Which planet is known as the Red Planet?",
+            options: ["Earth", "Mars", "Jupiter", "Venus"],
+            correct: 1
+        },
+        {
+            question: "Who wrote the book 'Discovery of India'?",
+            options: ["Mahatma Gandhi", "Jawaharlal Nehru", "Rabindranath Tagore", "Sardar Patel"],
+            correct: 1
+        },
+        {
+            question: "Which Mughal emperor built the Taj Mahal?",
+            options: ["Babur", "Akbar", "Shah Jahan", "Aurangzeb"],
+            correct: 2
+        },
+        {
+            question: "The Constitution of India was adopted by the Constituent Assembly on:",
+            options: ["January 26, 1950", "November 26, 1949", "August 15, 1947", "January 30, 1948"],
+            correct: 1
+        },
+        {
+            question: "Who was the first Indian to be elected to the British Parliament?",
+            options: ["Dadabhai Naoroji", "Bal Gangadhar Tilak", "Gopal Krishna Gokhale", "Mahatma Gandhi"],
+            correct: 0
+        },
+        {
+            question: "Which country hosted the 2020 Summer Olympics?",
+            options: ["China", "Japan", "Brazil", "Australia"],
+            correct: 1
+        },
+        {
+            question: "Which is the largest organ in the human body?",
+            options: ["Heart", "Liver", "Skin", "Lungs"],
+            correct: 2
+        },
+        {
+            question: "The Battle of Plassey was fought in which year?",
+            options: ["1757", "1857", "1947", "1764"],
+            correct: 0
+        },
+        {
+            question: "Which element is essential for the production of chlorophyll in plants?",
+            options: ["Iron", "Magnesium", "Nitrogen", "Sulfur"],
+            correct: 1
+        },
+        {
+            question: "What is the capital of Australia?",
+            options: ["Sydney", "Melbourne", "Canberra", "Perth"],
+            correct: 2
+        },
+        {
+            question: "In which year did India become a republic?",
+            options: ["1947", "1950", "1952", "1960"],
+            correct: 1
+        },
+        {
+            question: "Which vitamin is produced by the body when exposed to sunlight?",
+            options: ["Vitamin A", "Vitamin C", "Vitamin D", "Vitamin E"],
+            correct: 2
+        },
+        {
+            question: "Who was the first woman Prime Minister of India?",
+            options: ["Indira Gandhi", "Sarojini Naidu", "Sushma Swaraj", "Sonia Gandhi"],
+            correct: 0
+        },
+        {
+            question: "Which of the following is the largest freshwater lake in the world?",
+            options: ["Lake Victoria", "Lake Superior", "Caspian Sea", "Lake Baikal"],
+            correct: 1
+        },
+        {
+            question: "The 'Quit India' movement was launched by Mahatma Gandhi in which year?",
+            options: ["1942", "1920", "1930", "1947"],
+            correct: 0
+        },
+        {
+            question: "Which gas is most abundant in the Earth's atmosphere?",
+            options: ["Oxygen", "Hydrogen", "Nitrogen", "Carbon Dioxide"],
+            correct: 2
+        },
+        {
+            question: "The largest democracy in the world is:",
+            options: ["USA", "China", "Russia", "India"],
+            correct: 3
+        },
+        {
+            question: "Which of the following is not a primary color?",
+            options: ["Red", "Green", "Blue", "Yellow"],
+            correct: 1
+        },
+        {
+            question: "Which of the following is known as the 'Land of the Rising Sun'?",
+            options: ["China", "Japan", "South Korea", "Thailand"],
+            correct: 1
+        },
+        {
+            question: "Which is the longest river in the world?",
+            options: ["Amazon", "Nile", "Yangtze", "Mississippi"],
+            correct: 1
+        },
+        {
+            question: "Who was the first President of India?",
+            options: ["Jawaharlal Nehru", "Dr. Rajendra Prasad", "Sardar Patel", "Lal Bahadur Shastri"],
+            correct: 1
+        },
+        {
+            question: "Which is the national flower of India?",
+            options: ["Rose", "Lotus", "Sunflower", "Jasmine"],
+            correct: 1
+        },
+        {
+            question: "Which city is known as the 'Silicon Valley of India'?",
+            options: ["Hyderabad", "Bangalore", "Mumbai", "Chennai"],
+            correct: 1
+        },
+        {
+            question: "What is the chemical formula of water?",
+            options: ["H2O", "CO2", "O2", "CH4"],
+            correct: 0
+        },
+        {
+            question: "The first Governor-General of independent India was:",
+            options: ["C. Rajagopalachari", "Lord Mountbatten", "Jawaharlal Nehru", "Sardar Patel"],
+            correct: 1
+        },
+        {
+            question: "The headquarters of the United Nations is located in:",
+            options: ["Geneva", "Paris", "New York", "London"],
+            correct: 2
+        },
+        {
+            question: "In which year did World War I begin?",
+            options: ["1914", "1918", "1939", "1945"],
+            correct: 0
+        },
+        {
+            question: "The National Anthem of India was written by:",
+            options: ["Mahatma Gandhi", "Rabindranath Tagore", "Jawaharlal Nehru", "Bankim Chandra Chatterjee"],
+            correct: 1
+        },
+        {
+            question: "Which country is the largest producer of coffee in the world?",
+            options: ["India", "Vietnam", "Brazil", "Colombia"],
+            correct: 2
+        },
+        {
+            question: "Which metal is used for making the filaments of electric bulbs?",
+            options: ["Copper", "Iron", "Tungsten", "Aluminum"],
+            correct: 2
+        },
+        {
+            question: "Who was the founder of the Maurya Empire?",
+            options: ["Ashoka", "Chandragupta Maurya", "Bindusara", "Harsha"],
+            correct: 1
+        },
+        {
+            question: "The World Health Organization (WHO) is headquartered in:",
+            options: ["Geneva", "Paris", "New York", "Rome"],
+            correct: 0
+        },
+        {
+            question: "Which of the following is the smallest ocean in the world?",
+            options: ["Indian Ocean", "Pacific Ocean", "Atlantic Ocean", "Arctic Ocean"],
+            correct: 3
+        },
+        {
+            question: "In which year did India conduct its first nuclear test?",
+            options: ["1974", "1984", "1998", "1964"],
+            correct: 0
+        },
+        {
+            question: "Who is the author of the book 'Wings of Fire'?",
+            options: ["Jawaharlal Nehru", "A. P. J. Abdul Kalam", "S. Radhakrishnan", "C. V. Raman"],
+            correct: 1
+        },
+        {
+            question: "Which country is known as the 'Land of Thunderbolt'?",
+            options: ["Bhutan", "Nepal", "Sri Lanka", "Tibet"],
+            correct: 0
+        },
+        {
+            question: "The largest desert in the world is the:",
+            options: ["Sahara", "Gobi", "Kalahari", "Arctic"],
+            correct: 0
+        },
+        {
+            question: "Which Indian state has the longest coastline?",
+            options: ["Gujarat", "Maharashtra", "Andhra Pradesh", "Tamil Nadu"],
+            correct: 0
+        },
+        {
+            question: "Which of the following is a non-renewable resource?",
+            options: ["Solar energy", "Wind energy", "Coal", "Geothermal energy"],
+            correct: 2
+        },
+        {
+            question: "Who invented the telephone?",
+            options: ["Thomas Edison", "Alexander Graham Bell", "Nikola Tesla", "James Watt"],
+            correct: 1
+        },
+        {
+            question: "In which year did India win its first Cricket World Cup?",
+            options: ["1983", "1987", "1992", "2003"],
+            correct: 0
+        },
+        {
+            question: "The famous 'Ajanta Caves' are located in which state?",
+            options: ["Madhya Pradesh", "Maharashtra", "Karnataka", "Tamil Nadu"],
+            correct: 1
+        },
+        {
+            question: "Which part of the human body is affected by pneumonia?",
+            options: ["Liver", "Lungs", "Heart", "Kidneys"],
+            correct: 1
+        },
+        {
+            question: "Which Indian city is known as the 'City of Lakes'?",
+            options: ["Jaipur", "Udaipur", "Varanasi", "Bhopal"],
+            correct: 1
+        },
+        {
+            question: "Which is the smallest state in India by area?",
+            options: ["Goa", "Sikkim", "Tripura", "Nagaland"],
+            correct: 0
+        },
+        {
+            question: "Which of the following gases is used in the process of photosynthesis?",
+            options: ["Oxygen", "Carbon Dioxide", "Nitrogen", "Hydrogen"],
+            correct: 1
+        },
+        {
+            question: "In which year did the Indian National Congress (INC) form?",
+            options: ["1885", "1905", "1942", "1919"],
+            correct: 0
+        },
+        {
+            question: "What is the capital city of Canada?",
+            options: ["Toronto", "Vancouver", "Ottawa", "Montreal"],
+            correct: 2
+        },
+        {
+            question: "Who was the first Indian to win a Nobel Prize?",
+            options: ["C. V. Raman", "Rabindranath Tagore", "Mother Teresa", "Amartya Sen"],
+            correct: 1
+        },
+        {
+            question: "Which of the following is a non-metal that remains liquid at room temperature?",
+            options: ["Phosphorus", "Chlorine", "Bromine", "Iodine"],
+            correct: 2
+        },
+        {
+            question: "The International Monetary Fund (IMF) was established in which year?",
+            options: ["1944", "1945", "1947", "1950"],
+            correct: 1
+        },
+        {
+            question: "The famous Konark Sun Temple is located in which Indian state?",
+            options: ["Odisha", "Tamil Nadu", "West Bengal", "Karnataka"],
+            correct: 0
+        },
+        {
+            question: "Which Indian city is called the 'Pink City'?",
+            options: ["Jaipur", "Jodhpur", "Udaipur", "Bikaner"],
+            correct: 0
+        },
+        {
+            question: "Who invented the electric bulb?",
+            options: ["Nikola Tesla", "Thomas Edison", "Alexander Graham Bell", "Isaac Newton"],
+            correct: 1
+        },
+        {
+            question: "The largest coral reef in the world is located in:",
+            options: ["Australia", "Indonesia", "Maldives", "Philippines"],
+            correct: 0
+        },
+        {
+            question: "Which is the largest plateau in the world?",
+            options: ["Tibetan Plateau", "Deccan Plateau", "Colorado Plateau", "Patagonian Plateau"],
+            correct: 0
+        },
+        {
+            question: "Who was the first woman Governor of an Indian state?",
+            options: ["Sarojini Naidu", "Indira Gandhi", "Sucheta Kriplani", "Rajkumari Amrit Kaur"],
+            correct: 0
+        },
+        {
+            question: "Which Indian state is the largest producer of tea?",
+            options: ["Assam", "West Bengal", "Kerala", "Tamil Nadu"],
+            correct: 0
+        },
+        {
+            question: "What is the hardest natural substance on Earth?",
+            options: ["Gold", "Iron", "Diamond", "Platinum"],
+            correct: 2
+        },
+        {
+            question: "The Second World War ended in which year?",
+            options: ["1942", "1945", "1948", "1950"],
+            correct: 1
+        },
+        {
+            question: "Who is the current Secretary-General of the United Nations (as of 2024)?",
+            options: ["Antonio Guterres", "Ban Ki-moon", "Kofi Annan", "Boutros Boutros-Ghali"],
+            correct: 0
+        },
+        {
+            question: "The Indian National Flag was adopted in its present form on:",
+            options: ["August 15, 1947", "January 26, 1950", "July 22, 1947", "October 2, 1949"],
+            correct: 2
+        },
+        {
+            question: "Which planet is the hottest in the solar system?",
+            options: ["Mercury", "Venus", "Mars", "Jupiter"],
+            correct: 1
+        },
+        {
+            question: "Which country is known as the 'Land of the Midnight Sun'?",
+            options: ["Norway", "Iceland", "Canada", "Sweden"],
+            correct: 0
+        },
+        {
+            question: "In which year did Alexander invade India?",
+            options: ["326 BC", "250 BC", "321 AD", "185 BC"],
+            correct: 0
+        },
+        {
+            question: "Who is the founder of the SpaceX company?",
+            options: ["Elon Musk", "Jeff Bezos", "Bill Gates", "Larry Page"],
+            correct: 0
+        },
+        {
+            question: "Which country is the largest producer of gold?",
+            options: ["South Africa", "Australia", "Russia", "China"],
+            correct: 3
+        },
+        {
+            question: "Which is the smallest bird in the world?",
+            options: ["Sparrow", "Pigeon", "Hummingbird", "Parrot"],
+            correct: 2
+        },
+        {
+            question: "What is the SI unit of pressure?",
+            options: ["Newton", "Pascal", "Joule", "Watt"],
+            correct: 1
+        },
+        {
+            question: "The Dandi March was led by Mahatma Gandhi in which year?",
+            options: ["1920", "1930", "1942", "1947"],
+            correct: 1
+        },
+        {
+            question: "Which Indian state is the largest producer of rubber?",
+            options: ["Tamil Nadu", "Kerala", "Assam", "Karnataka"],
+            correct: 1
+        },
+        {
+            question: "The ozone layer protects Earth from which type of radiation?",
+            options: ["Infrared", "Ultraviolet", "Gamma", "X-ray"],
+            correct: 1
+        },
+        {
+            question: "Which instrument is used to measure atmospheric pressure?",
+            options: ["Barometer", "Hygrometer", "Thermometer", "Anemometer"],
+            correct: 0
+        },
+        {
+            question: "Which year is known for the launch of the 'Green Revolution' in India?",
+            options: ["1950", "1965", "1971", "1980"],
+            correct: 1
+        },
+        {
+            question: "Who was the first Indian woman to win an Olympic medal?",
+            options: ["Karnam Malleswari", "P. T. Usha", "Saina Nehwal", "Mary Kom"],
+            correct: 0
+        },
+        {
+            question: "Which is the largest continent by area?",
+            options: ["Africa", "Asia", "North America", "Europe"],
+            correct: 1
+        },
+        {
+            question: "Who was the first Indian astronaut to go to space?",
+            options: ["Kalpana Chawla", "Rakesh Sharma", "Sunita Williams", "Yuri Gagarin"],
+            correct: 1
+        },
+        {
+            question: "Which is the largest island in the world?",
+            options: ["Greenland", "Australia", "Madagascar", "Iceland"],
+            correct: 0
+        },
+        {
+            question: "The largest gland in the human body is:",
+            options: ["Pancreas", "Liver", "Kidney", "Thyroid"],
+            correct: 1
+        },
+        {
+            question: "Which Indian classical dance form originated in Tamil Nadu?",
+            options: ["Kathak", "Bharatanatyam", "Odissi", "Kuchipudi"],
+            correct: 1
+        },
+        {
+            question: "Who is known as the Iron Man of India?",
+            options: ["Jawaharlal Nehru", "Sardar Vallabhbhai Patel", "Subhas Chandra Bose", "Bhagat Singh"],
+            correct: 1
+        },
+        {
+            question: "Which is the largest bone in the human body?",
+            options: ["Humerus", "Femur", "Tibia", "Fibula"],
+            correct: 1
+        },
+        {
+            question: "What is the capital of Norway?",
+            options: ["Stockholm", "Oslo", "Helsinki", "Copenhagen"],
+            correct: 1
+        },
+        {
+            question: "The Indian state of Sikkim shares its border with which country?",
+            options: ["Nepal", "China", "Bhutan", "All of the above"],
+            correct: 3
+        },
+        {
+            question: "Which metal is the best conductor of electricity?",
+            options: ["Gold", "Aluminum", "Copper", "Silver"],
+            correct: 3
+        },
+        {
+            question: "Which is the smallest planet in our solar system?",
+            options: ["Venus", "Mars", "Mercury", "Earth"],
+            correct: 2
+        },
+        {
+            question: "The 'Jallianwala Bagh Massacre' occurred in which year?",
+            options: ["1919", "1920", "1942", "1930"],
+            correct: 0
+        },
+        {
+            question: "Which Indian city is known as the 'Manchester of India'?",
+            options: ["Mumbai", "Ahmedabad", "Kolkata", "Surat"],
+            correct: 1
+        },
+        {
+            question: "Who was the first woman to climb Mount Everest?",
+            options: ["Junko Tabei", "Bachendri Pal", "Lydia Bradey", "Wanda Rutkiewicz"],
+            correct: 1
+        },
+        {
+            question: "What is the capital of Sri Lanka?",
+            options: ["Colombo", "Kandy", "Galle", "Jaffna"],
+            correct: 0
+        },
+        {
+            question: "The famous Red Fort is located in which Indian city?",
+            options: ["Agra", "Jaipur", "New Delhi", "Mumbai"],
+            correct: 2
+        },
+        {
+            question: "The Nobel Peace Prize is awarded in which city?",
+            options: ["Stockholm", "Oslo", "Geneva", "Paris"],
+            correct: 1
+        },
+        {
+            question: "Which is the second-largest planet in the solar system?",
+            options: ["Jupiter", "Mars", "Saturn", "Venus"],
+            correct: 2
+        },
+        {
+            question: "Which Indian state is the largest producer of rice?",
+            options: ["Punjab", "Tamil Nadu", "West Bengal", "Uttar Pradesh"],
+            correct: 2
+        },
+        {
+            question: "Who discovered penicillin?",
+            options: ["Alexander Fleming", "Marie Curie", "Isaac Newton", "Albert Einstein"],
+            correct: 0
+        },
+        {
+            question: "The Great Wall of China was built to protect against invasions by which group?",
+            options: ["Huns", "Mongols", "Japanese", "Russians"],
+            correct: 1
+        },
+        {
+            question: "What is the largest organ inside the human body?",
+            options: ["Brain", "Heart", "Liver", "Stomach"],
+            correct: 2
+        },
+        {
+            question: "Which Indian state is the largest producer of coffee?",
+            options: ["Kerala", "Tamil Nadu", "Karnataka", "Assam"],
+            correct: 2
+        },
+        {
+            question: "Which is the largest ocean in the world?",
+            options: ["Indian Ocean", "Atlantic Ocean", "Pacific Ocean", "Arctic Ocean"],
+            correct: 2
+        },
+        {
+            question: "The famous Sun Temple of Konark is dedicated to which deity?",
+            options: ["Vishnu", "Shiva", "Surya", "Ganesha"],
+            correct: 2
+        },
+        {
+            question: "What is the capital of Maldives?",
+            options: ["Male", "Colombo", "Dhaka", "Jakarta"],
+            correct: 0
+        },
+        {
+            question: "In which year was the Battle of Panipat fought?",
+            options: ["1526", "1761", "1600", "1857"],
+            correct: 1
+        },
+        {
+            question: "Which is the national bird of India?",
+            options: ["Peacock", "Sparrow", "Parrot", "Eagle"],
+            correct: 0
+        },
+        {
+            question: "What is the SI unit of electric current?",
+            options: ["Volt", "Ohm", "Watt", "Ampere"],
+            correct: 3
+        },
+        {
+            question: "The term 'Green Revolution' refers to the improvement of which sector in India?",
+            options: ["Industry", "Agriculture", "Transport", "Information Technology"],
+            correct: 1
+        }
+
+    ];
+
+    // Function to shuffle the questions
+    function shuffleQuestions(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    // Shuffle and select 3 random questions
+    let shuffledQuizData = shuffleQuestions(quizData).slice(0, 25);<!--to choose the random question-->
+    
+    let currentQuestion = 0;
+    let score = 0;
+    let timer;
+    let timeLeft = 30;
+
+    function loadQuestion() {
+        const questionData = shuffledQuizData[currentQuestion];
+        document.getElementById('question-text').textContent = questionData.question;
+
+        const optionGroup = document.getElementById('option-group');
+        optionGroup.innerHTML = '';
+
+        questionData.options.forEach((option, index) => {
+            const optionHTML = `
+                <input type="radio" id="option${index}" name="option" value="${index}">
+                <label for="option${index}">${option}</label>
+            `;
+            optionGroup.innerHTML += optionHTML;
+        });
+
+        // Reset button state
+        document.getElementById('next-btn').disabled = true;
+        document.getElementById('timer').textContent = '30s';
+        timeLeft = 30;
+
+        // Add event listener for selecting an option
+        document.querySelectorAll('input[name="option"]').forEach(input => {
+            input.addEventListener('change', function () {
+                enableNextButton();
+            });
+        });
+
+        // Update progress bar
+        const progressPercentage = ((currentQuestion + 1) / shuffledQuizData.length) * 100;
+        document.getElementById('progress-bar').style.width = progressPercentage + '%';
+
+        // Start timer
+        startTimer();
+    }
+
+    function enableNextButton() {
+        document.getElementById('next-btn').disabled = false;
+    }
+
+    function startTimer() {
+        timer = setInterval(function () {
+            timeLeft--;
+            document.getElementById('timer').textContent = timeLeft + 's';
+
+            if (timeLeft <= 0) {
+                skipQuestion();
+            }
+        }, 1000);
+    }
+
+    function stopTimer() {
+        clearInterval(timer);
+    }
+
+    function nextQuestion() {
+        // Check if the selected answer is correct
+        const selectedOption = document.querySelector('input[name="option"]:checked');
+        if (selectedOption) {
+            const answer = parseInt(selectedOption.value);
+            if (answer === shuffledQuizData[currentQuestion].correct) {
+                score++; // Increment score if the answer is correct
+            }
+        }
+
+        // Stop the timer and move to the next question
+        stopTimer();
+        currentQuestion++;
+
+        if (currentQuestion < shuffledQuizData.length) {
+            loadQuestion();
+        } else {
+            showResults();
+        }
+    }
+
+    function skipQuestion() {
+        stopTimer();
+        nextQuestion();
+    }
+    function showResults() {
+        document.querySelector('.quiz-container').innerHTML = `
+            <h1>Quiz Completed!</h1>
+            <p>Your score: ${score} / ${25}</p>
+            <button class="submit-btn" onclick="restartQuiz()">Restart Quiz</button>
+            <button class="submit-btn" onclick="goToMainPage()">Go to Main Page</button>
+            <button class="submit-btn" onclick="showanswers()">Correct answers</button>
+        `;
+    }
+    function showanswers() {
+        let resultHTML = `<h1>Correct Answers</h1>`;
+        
+        quizData.forEach((data, index) => {
+            resultHTML += `<div class="question-result">
+                <p><strong> ${data.question}</strong></p>
+                <p><span style="color: green;">Correct Answer: ${data.options[data.correct]}</span></p>
+            </div><hr>`;
+        });
+    
+        resultHTML += `<button class="submit-btn" onclick="restartQuiz()">Restart Quiz</button>
+                       <button class="submit-btn" onclick="goToMainPage()">Go to Main Page</button>`;
+    
+        document.querySelector('.quiz-container').innerHTML = resultHTML;
+    
+    
+
+        if (!resultHTML.includes('<div class="question-result">')) {
+            resultHTML += `<p>Great job! You answered all questions correctly!</p>`;
+        }
+    }
+
+    function restartQuiz() {
+        location.href = 'kas-english-quiz.html'; 
+    }
+
+    function goToMainPage() {
+        location.href = 'index.html'; // Replace 'index.html' with the URL of the main page
+    }
+
+    // Load the first question when the page loads
+    window.onload = loadQuestion;
+    
+</script>
+
+</body>
+</html>
+
+
+    

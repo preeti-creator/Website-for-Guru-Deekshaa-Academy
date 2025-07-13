@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="kn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ಕೆಎಎಸ್ ಅಧ್ಯಯನ ಸಾಮಗ್ರಿಗಳು</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 1.8em;
+        }
+
+        /* Content Container */
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* PDF List Styles */
+        .pdf-list {
+            margin-top: 20px;
+            padding: 0;
+            list-style: none;
+        }
+        .pdf-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .pdf-item:hover {
+            background-color: #e8e8e8;
+        }
+        .pdf-item a {
+            text-decoration: none;
+            color: #007BFF;
+            font-weight: bold;
+        }
+        .pdf-item a:hover {
+            text-decoration: underline;
+        }
+        .pdf-item button {
+            padding: 5px 10px;
+            font-size: 0.9em;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .pdf-item button:hover {
+            background-color: #45a049;
+        }
+
+        /* PDF Viewer Section */
+        iframe {
+            width: 100%;
+            height: 500px;
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>KAS Study Materials</h1>
+    </header>
+
+    <div class="container">
+        <p>Here are PDFs available to read and download for KAS (Karnataka Administrative Services) preparation.</p>
+        
+        <ul class="pdf-list">
+            <li class="pdf-item">
+                <a href="2017 PRELIMS P2_af775f7a-fcd4-44c4-9709-971e07116437 (1).pdf" target="pdf-frame">PRELIMS 2017 P2</a>
+                <button onclick="downloadPDF('2017 PRELIMS P2_af775f7a-fcd4-44c4-9709-971e07116437 (1).pdf')">Download</button>
+            </li>
+            <li class="pdf-item">
+                <a href="2017 PRELIMS P1_a77f807f-fc11-4e7b-80ba-ebe4aeec0287.pdf" target="pdf-frame">PRELIMS 2017 P1</a>
+                <button onclick="downloadPDF('2017 PRELIMS P1_a77f807f-fc11-4e7b-80ba-ebe4aeec0287.pdf')">Download</button>
+            </li>
+            <li class="pdf-item">
+                <a href="2015 PRELIMS P1_b9048a09-2bf6-4717-835e-98714f5ff9f3.pdf" target="pdf-frame">PRELIMS 2015 P1</a>
+                <button onclick="downloadPDF('2015 PRELIMS P1_b9048a09-2bf6-4717-835e-98714f5ff9f3.pdf')">Download</button>
+            </li>
+            <li class="pdf-item">
+                <a href="2015 PRELIMS P2_a051d267-8bab-474d-af6c-1642d4ba42dc.pdf" target="pdf-frame">PRELIMS 2015 P2</a>
+                <button onclick="downloadPDF('2015 PRELIMS P2_a051d267-8bab-474d-af6c-1642d4ba42dc.pdf')">Download</button>
+            </li>
+            <li class="pdf-item">
+                <a href="2014 PRELIMS P2_3ac3af4c-8e43-4b59-a2e8-42d00eaf4dda.pdf" target="pdf-frame">PRELIMS 2014 P2</a>
+                <button onclick="downloadPDF('2014 PRELIMS P2_3ac3af4c-8e43-4b59-a2e8-42d00eaf4dda.pdf')">Download</button>
+            </li>
+        </ul>
+
+        <h2>Read PDF here</h2>
+        <iframe id="pdf-frame" src="" title="PDF Viewer"></iframe>
+    </div>
+
+    <footer>
+        &copy; 2024 Guru Deekshaa Academy| All rights reserved. 
+    </footer>
+
+    <script>
+        // Automatically load the selected PDF into the iframe
+        const links = document.querySelectorAll('.pdf-item a[target="pdf-frame"]');
+        const iframe = document.getElementById('pdf-frame');
+
+        links.forEach(link => {
+            link.addEventListener('click', event => {
+                event.preventDefault();
+                iframe.src = event.target.href;
+            });
+        });
+
+        // Function to download PDFs
+        function downloadPDF(pdfFile) {
+            const a = document.createElement('a');
+            a.href = pdfFile;
+            a.download = pdfFile;
+            a.click();
+        }
+    </script>
+</body>
+</html>

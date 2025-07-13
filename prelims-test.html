@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prelims Test Selection</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #ff758c, #ff7eb3);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #fff;
+            transition: background 0.5s ease;
+        }
+
+        .selection-container {
+            max-width: 600px;
+            width: 100%;
+            background: #fff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            color: #333;
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+        }
+
+        .selection-container:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            color: #ff5e57;
+        }
+
+        .option-group {
+            margin: 20px 0;
+        }
+
+        label {
+            display: block;
+            padding: 12px 18px;
+            margin: 10px 0;
+            background-color: #ffecd2;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        input[type="radio"] {
+            display: none;
+        }
+
+        label:hover, input[type="radio"]:checked + label {
+            background-color: #00b4db;
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .submit-btn {
+            background: linear-gradient(to right, #43e97b, #38f9d7);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 30px;
+            font-size: 20px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(to right, #ff0844, #ffb199);
+            transform: scale(1.05);
+        }
+
+        .submit-btn:active {
+            transform: scale(0.98);
+        }
+
+        #kas-options {
+            margin-top: 20px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="selection-container">
+    <h1>Select Your Quiz</h1>
+
+    <!-- KAS and UPSC Selection -->
+    <div class="option-group">
+        <input type="radio" id="kas" name="exam" value="KAS">
+        <label for="kas">KAS</label>
+
+        <input type="radio" id="upsc" name="exam" value="UPSC">
+        <label for="upsc">UPSC</label>
+    </div>
+
+        
+    <!-- Kannada/English Selection for KAS -->
+    <div id="kas-options" style="display: none;">
+        <h2>Select Language for KAS</h2>
+        <div class="option-group">
+            <input type="radio" id="kannada" name="language" value="Kannada">
+            <label for="kannada">Kannada</label>
+
+            <input type="radio" id="english" name="language" value="English">
+            <label for="english">English</label>
+        </div>
+    </div>
+
+    <button class="submit-btn" onclick="submitSelection()">Start Quiz</button>
+</div>
+
+<script>
+    // Show Kannada/English options only when KAS is selected
+    document.querySelectorAll('input[name="exam"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            if (this.value === 'KAS') {
+                document.getElementById('kas-options').style.display = 'block';
+            } else {
+                document.getElementById('kas-options').style.display = 'none';
+            }
+        });
+    });
+
+    function submitSelection() {
+        const exam = document.querySelector('input[name="exam"]:checked');
+        const language = document.querySelector('input[name="language"]:checked');
+
+        if (!exam) {
+            alert("Please select an exam.");
+            return;
+        }
+
+        if (exam.value === 'KAS' && !language) {
+            alert("Please select a language for KAS.");
+            return;
+        }
+
+        // Redirect based on the selected options
+        if (exam.value === 'KAS') {
+            if (language.value === 'Kannada') {
+                window.location.href = 'kas-kannada-quiz.html';  // Redirect to Kannada version of KAS quiz
+            } else if (language.value === 'English') {
+                window.location.href = 'kas-english-quiz.html';  // Redirect to English version of KAS quiz
+            }
+        } else if (exam.value === 'UPSC') {
+            window.location.href = 'upsc-quiz.html';  // Redirect to UPSC quiz
+        }
+    }
+</script>
+
+</body>
+</html>

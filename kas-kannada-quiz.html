@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KAS English Quiz</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #36d1dc, #5b86e5);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #fff;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            width: 100%;
+            background: #fff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            color: #333;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #5b86e5;
+        }
+
+        .question {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .option-group {
+            margin: 20px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label {
+            display: block;
+            padding: 15px 20px;
+            margin: 10px 0;
+            width: 100%;
+            max-width: 500px;
+            background-color: #f1f1f1;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        input[type="radio"] {
+            display: none;
+        }
+
+        label:hover, input[type="radio"]:checked + label {
+            background-color: #36d1dc;
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .submit-btn {
+            background: linear-gradient(to right, #36d1dc, #5b86e5);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 30px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin: 10px;
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(to right, #ff758c, #ff7eb3);
+        }
+
+        .progress-bar {
+            height: 15px;
+            background-color: #36d1dc;
+            border-radius: 10px;
+            transition: width 0.4s ease;
+            margin-top: 20px;
+        }
+
+        .progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .timer {
+            font-size: 1.5em;
+            margin-top: 15px;
+            color: #ff0844;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <h1>KAS English Quiz</h1>
+
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progress-bar" style="width: 0%;"></div>
+    </div>
+
+    <!-- Quiz Question -->
+    <div class="question" id="question-text">Question will appear here</div>
+
+    <!-- Timer -->
+    <div class="timer" id="timer">30s</div>
+
+    <!-- Options -->
+    <div class="option-group" id="option-group">
+        <!-- Options will be dynamically inserted here -->
+    </div>
+
+    <!-- Buttons -->
+    <button class="submit-btn" id="next-btn" onclick="nextQuestion()" disabled>Next Question</button>
+    <button class="submit-btn" id="skip-btn" onclick="skipQuestion()">Skip Question</button>
+    
+</div>
+
+<script>
+    const quizData = [
+{
+    question: "ಕನ್ನಡ ವರ್ಣಮಾಲೆಯಲ್ಲಿನ ಮಹಾಪ್ರಾಣಾಕ್ಷರಗಳ ಸಂಖ್ಯೆ",
+    options: ["10", "5", "25", "48"],
+    correct: 0
+},
+{
+    question: "ದೀರ್ಘ ಸ್ವರಗಳು : 07 : : ಹ್ರಸ್ವಸ್ವರಗಳು : ------------",
+    options: ["5", "7", "6", "8"],
+    correct: 2
+},
+{
+    question: "ಕನ್ನಡದಲ್ಲಿರುವ ಅನುನಾಸಿಕ ಅಕ್ಷರಗಳು ಸಂಖ್ಯೆ",
+    options: ["5", "8", "2", "6"],
+    correct: 0
+},
+{
+    question: "ರೋದನ ಪದದ ಅರ್ಥ",
+    options: ["ನಿರಾಶೆ", "ಅಳುವಿಕೆ", "ಕರುಣೆ ಇಲ್ಲದೆ", "ಆಶಾಭಂಗ"],
+    correct: 1
+},
+
+    {
+        question: "ಭೂಮಿಯ ಮೇಲೆ ಅತ್ಯಂತ ದೊಡ್ಡ ಖಂಡ ಯಾವುದು?",
+        options: ["ಆಫ್ರಿಕಾ", "ಆಶಿಯಾ", "ಉತ್ತರ ಅಮೆರಿಕಾ", "ಯುರೋಪ್"],
+        correct: 1
+    },
+    {
+        question: "ಪ್ರಥಮ ಭಾರತೀಯ ಬಾಹ್ಯಾಕಾಶಯಾನಿ ಯಾರು?",
+        options: ["ಕಲ್ಪನಾ ಚಾವ್ಲಾ", "ರಕೆಶ್ ಶರ್ಮ", "ಸುನಿತಾ ವಿಲಿಯಮ್ಸ್", "ಯೂರಿ ಗಾಗರಿನ್"],
+        correct: 1
+    },
+    {
+        question: "ಭೂಮಿಯ ಮೇಲೆ ಅತ್ಯಂತ ದೊಡ್ಡ ದ್ವೀಪ ಯಾವುದು?",
+        options: ["ಗ್ರೀನ್‌ಲ್ಯಾಂಡ್", "ಆಸ್ಟ್ರೇಲಿಯಾ", "ಮಡಗಾಸ್ಕರ್", "ಐಸ್‌ಲ್ಯಾಂಡ್"],
+        correct: 0
+    },
+    {
+        question: "ಮನುಷ್ಯ ದೇಹದ ಅತಿದೊಡ್ಡ ಗ್ರಂಥಿ ಯಾವುದು?",
+        options: ["ಪ್ಯಾಂಕ್ರಿಯಾಸ್", "ಯಕೃತ", "ಕಿಡ್ನಿ", "ಥೈರಾಯ್ಡ್"],
+        correct: 1
+    },
+    {
+        question: "ಯಾವ ಭಾರತೀಯ ಶ್ರೇಣಿಯ ನೃತ್ಯ ರೂಪವು ತಮಿಳು ನಾಡಿನಿಂದ ಉಚ್ಚರಿತವಾಗಿದೆ?",
+        options: ["ಕಥಕ್", "ಭರತನಾಟ್ಯ", "ಒಡಿಸಿ", "ಕುಚಿಪುಡಿ"],
+        correct: 1
+    },
+    {
+        question: "ಭಾರತದ ಐರಾನ್ ಮನ್ ಎಂದು ಯಾರನ್ನು ಕರೆಯುತ್ತಾರೆ?",
+        options: ["ಜವಾಹರ್‌ಲಾಲ್ ನೆಹರೂ", "ಸರ್ದಾರ್ ವಲ್ಲಭ್‌ಭಾಯ್ ಪಟೇಲ್", "ಸುಭಾಸ್ ಚಂದ್ರ ಬೋಸ್", "ಭಗತ್ ಸಿಂಗ್"],
+        correct: 1
+    },
+    {
+        question: "ಮಾನವನ ದೇಹದಲ್ಲಿ ಅತಿದೊಡ್ಡ ಎಲುಬು ಯಾವುದು?",
+        options: ["ಹ್ಯೂಮರಸ್", "ಫೆಮರ್", "ಟಿಬಿಯಾ", "ಫಿಬುಲಾ"],
+        correct: 1
+    },
+    {
+        question: "ನಾರ್ವೆಯ ರಾಜಧಾನಿ ಯಾವುದು?",
+        options: ["ಸ್ಟಾಕ್‌ಹೋಮ್", "ಓಸ್ಲೋ", "ಹೆಲ್ಸಿಂಕಿ", "ಕೊಪೆನ್‌ಹೇಗನ್"],
+        correct: 1
+    },
+    {
+        question: "ಭಾರತದ ಸಿಕ್ಕಿಂ ರಾಜ್ಯವು ಯಾವ ದೇಶದೊಂದಿಗೆ ಗಡಿಗಳನ್ನು ಹಂಚಿಕೊಳ್ಳುತ್ತದೆ?",
+        options: ["ನೇಪಾಲ್", "ಚೀನಾ", "ಭುಟಾನ್", "ಎಲ್ಲೂ"],
+        correct: 3
+    },
+    {
+        question: "ಯಾವ ಲೋಹವು ವಿದ್ಯುತ್ ಹರಿವಿಗೆ ಉತ್ತಮ ಉತ್ತೇಜಕವಾಗಿದೆ?",
+        options: ["ಚಿನ್ನ", "ಅಲ್ಯೂಮಿನಿಯಂ", "ಕಬ್ಬಿಣ", "ಬುಬ್ಬು"],
+        correct: 3
+    },
+    {
+        question: "ನಮ್ಮ ಸೂರ್ಯಕಾಂತ್ರದಲ್ಲಿ ಅತಿದೊಡ್ಡ ಗ್ರಹ ಯಾವುದು?",
+        options: ["ವೆನಸ್", "ಮಾರ್ಸ್", "ಮರ್ಕ್ಯೂರಿ", "ಭೂಮಿ"],
+        correct: 2
+    },
+    {
+        question: "ಜಲ್ಲಿಯನ್‌ವಾಲಾ ಬಾಗ್ ಹತ್ಯಾಕಾಂಡ ಯಾವ ವರ್ಷದಲ್ಲಿ ನಡೆದಿತ್ತು?",
+        options: ["1919", "1920", "1942", "1930"],
+        correct: 0
+    },
+    {
+        question: "ಭಾರತದ 'ಮ್ಯಾನ್‌ಚೆಸ್ಟರ್' ಎಂದು ಕರೆಯಲ್ಪಡುವ ನಗರ ಯಾವದು?",
+        options: ["ಮುಂಬೈ", "ಅಹಮದಾಬಾದ್", "ಕೊಲ್ಕತ್ತಾ", "ಸೂರತ್"],
+        correct: 1
+    },
+    {
+        question: "ಮೌಂಟ್ ಎವೆರೆಸ್ಟ್ ಅನ್ನು ಏರಿದ ಪ್ರಥಮ ಮಹಿಳೆ ಯಾರು?",
+        options: ["ಜುಂಕೋ ಟಬೆ", "ಭಾಚೇಂದ್ರಿ ಪಾಲ್", "ಲಿಡಿಯಾ ಬ್ರಾಡಿ", "ವಾಂಡಾ ರೂಟ್ಕಿವಿಜ್"],
+        correct: 1
+    },
+    {
+        question: "ಶ್ರೀಲಂಕಾದ ರಾಜಧಾನಿ ಯಾವುದು?",
+        options: ["ಕೋಲಂಬೋ", "ಕೆಂಡಿ", "ಗಲ್ಲೆ", "ಜಾಫ್ನಾ"],
+        correct: 0
+    },
+    {
+        question: "ಪ್ರಸಿದ್ಧ ಕೆಂಪು ಕೋಟೆ ಯಾವ ನಗರದಲ್ಲಿ ಇದೆ?",
+        options: ["ಆಗ್ರಾ", "ಜೈಪುರ", "ನವ ದೆಹಲಿ", "ಮುಂಬೈ"],
+        correct: 2
+    },
+    {
+        question: "ನೋಬೆಲ್ ಶಾಂತಿ ಪ್ರಶಸ್ತಿ ಯಾವ ನಗರದಲ್ಲಿ ನೀಡಲಾಗುತ್ತದೆ?",
+        options: ["ಸ್ಟಾಕ್‌ಹೋಮ್", "ಓಸ್ಲೋ", "ಜೀನುವಾ", "ಪ್ಯಾರಿಸ್"],
+        correct: 1
+    },
+    {
+        question: "ನಮ್ಮ ಸೂರ್ಯಕಾಂತ್ರದಲ್ಲಿ ಎರಡನೇ ಅತಿದೊಡ್ಡ ಗ್ರಹ ಯಾವುದು?",
+        options: ["ಜುಪಿಟರ್", "ಮಾರ್ಸ್", "ಸಾಟರ್ನ್", "ವೆನಸ್"],
+        correct: 2
+    },
+    {
+        question: "ಯಾವ ಭಾರತೀಯ ರಾಜ್ಯವು ಧಾನ್ಯ ಬೆಳೆಗಳಲ್ಲಿ ಅತಿದೊಡ್ಡ ಉತ್ಪಾದಕವಾಗಿದೆ?",
+        options: ["ಪಂಜಾಬ್", "ತಮಿಳುನಾಡು", "ಪಶ್ಚಿಮ ಬೆಂಗಾಲ್", "ಉತ್ತರ ಪ್ರದೇಶ"],
+        correct: 2
+    },
+    {
+        question: "ಪೆನಿಸಿಲಿನ್ ಅನ್ನು ಯಾವವನು ಕಂಡುಹಿಡಿಯಿತು?",
+        options: ["ಅಲೆಕ್ಸಾಂಡರ್ ಫ್ಲೆಮಿಂಗ್", "ಮಾರಿಯ ಕೂರಿ", "ಐಜಾಕ್ ನ್ಯೂಟನ್", "ಆಲ್ಬರ್ಟ್ ಐನ್‌ಸ್ಟೈನ್"],
+        correct: 0
+    },
+    {
+        question: "ಚೀನಾದ ಮಹಾನ್ ಗೋಡೆ ಯಾವ ಗುಂಪಿನಿಂದ ಆಕ್ರಮಣಗಳಿಂದ ರಕ್ಷಿಸಲು ನಿರ್ಮಿಸಲಾಗಿತ್ತು?",
+        options: ["ಹನ್ನರು", "ಮಂಗೋಲ್ಸ್", "ಜಾಪಾನೀ", "ರಷ್ಯನ"],
+        correct: 1
+    },
+    {
+        question: "ಮನುಷ್ಯ ದೇಹದಲ್ಲಿ ಅತಿದೊಡ್ಡ ಅಂಗ ಯಾವುದು?",
+        options: ["ಮಸ್ಸು", "ಹೃದಯ", "ಯಕೃತ", "ಗ್ಯಾಸ್ಟ್ರಿಕ್"],
+        correct: 2
+    },
+    {
+        question: "ಭಾರತದಲ್ಲಿ ಕಾಫಿಯ ಅತಿದೊಡ್ಡ ಉತ್ಪಾದಕ ರಾಜ್ಯ ಯಾವುದು?",
+        options: ["ಕೇರಳ", "ತಮಿಳುನಾಡು", "ಕರ್ಣಾಟಕ", "ಆಸಾಮ್"],
+        correct: 2
+    },
+    {
+        question: "ಭೂಮಿಯ ಮೇಲೆ ಅತಿದೊಡ್ಡ ಮಹಾಸಾಗರ ಯಾವುದು?",
+        options: ["ಭಾರತಿ ಸಾಗರ", "ಅಟ್ಲಾಂಟಿಕ್ ಸಾಗರ", "ಪೆಸಿಫಿಕ್ ಸಾಗರ", "ಆರ್ಕಟಿಕ್ ಸಾಗರ"],
+        correct: 2
+    },
+    {
+        question: "ಪ್ರಸಿದ್ಧ ಕೋನಾರ್ಕ್ ಸೂರ್ಯ ಮಂದಿರವು ಯಾವ ದೇವನಿಗೆ ಸಮರ್ಪಿತವಾಗಿದೆ?",
+        options: ["ವಿಷ್ಣು", "ಶಿವ", "ಸೂರ್ಯ", "ಗಣೇಶ"],
+        correct: 2
+    },
+    {
+        question: "ಮಾಲ್ದೀವ್ಸ್‌ನ ರಾಜಧಾನಿ ಯಾವುದು?",
+        options: ["ಮಾಲೆ", "ಕೋಲಂಬೋ", "ಧಾಕಾ", "ಜಕಾರ್ತಾ"],
+        correct: 0
+    },
+    {
+        question: "ಪಣಿಪತ್ ಯುದ್ಧವು ಯಾವ ವರ್ಷದಲ್ಲಿ ನಡೆಯಿತು?",
+        options: ["1526", "1761", "1600", "1857"],
+        correct: 1
+    },
+    {
+        question: "ಭಾರತದ ರಾಷ್ಟ್ರಪಕ್ಕಿಯ ಪಕ್ಷಿಯು ಯಾವುದು?",
+        options: ["ಮೋರು", "ಚೂಟುಹಕ್ಕಿ", "ಗೀಟರ್", "ಅಕ್ಕಿಯ"],
+        correct: 0
+    },
+    {
+        question: "ವಿದ್ಯುತ್ ಹರಿವಿನ SI ಘಟಕ ಯಾವುದು?",
+        options: ["ವೋಲ್ಟ್", "ಓಮ್", "ವಾಟ್", "ಆಂಪಿಯರ್"],
+        correct: 3
+    },
+    {
+        question: "ಹಸಿರು ಕ್ರಾಂತಿಯನ್ನು ಭಾರತದ ಯಾವ ಕ್ಷೇತ್ರದಲ್ಲಿ ಸುಧಾರಣೆ ಎಂದು ಕರೆಯಲಾಗುತ್ತದೆ?",
+        options: ["ಉದ್ಯೋಗ", "ಕೃಷಿ", "ಹಾನಿಕಾರಕ", "ಮಾಹಿತಿ ತಂತ್ರಜ್ಞಾನ"],
+        correct: 1
+    },
+    {
+        question: "ಭಾರತದ ರಾಷ್ಟ್ರಪತಿಯಾಗಿ ಪ್ರಧಾನಿಯಾಗಿ ಯಾರನ್ನು ಮೊದಲನೇ ಬಾರಿಗೆ ಆಯ್ಕೆ ಮಾಡಲಾಯಿತು?",
+        options: ["ಬಿ. ಆರ್. ಅಂಬೇಡ್ಕರ್", "ಊಮಾ ಭಾರತಿ", "ಡಾ. ರಾಮ್ ಮೋಹನ್ ಲೋಹಿಯಾ", "ಡಾ. ರಾಜೇಂದ್ರ ಪ್ರಸಾದ್"],
+        correct: 3
+    },
+    {
+        question: "ಭಾರತದ ರಾಷ್ಟ್ರಭಾಷೆ ಯಾವುದು?",
+        options: ["ಹಿಂದಿ", "ಕನ್ನಡ", "ಭಾಷೆ", "ಬಂಗಾಲಿ"],
+        correct: 0
+    },
+    {
+        question: "ಭಾರತದಲ್ಲಿ ಆರಂಭವಾದ 'ಜಲ ಸಂರಕ್ಷಣೆ' ಯೋಜನೆಯು ಯಾವ ವರ್ಷದಲ್ಲಿ?",
+        options: ["1990", "2000", "1995", "1985"],
+        correct: 2
+    },
+    {
+        question: "ಭಾರತದಲ್ಲಿ ಕಡ್ಡಾಯ ಶಿಕ್ಷಣ ಕಾಯ್ದೆಯು ಯಾವ ವರ್ಷದಲ್ಲಿ ತೆಗೆದುಕೊಳ್ಳಲಾಗಿದೆ?",
+        options: ["2002", "2005", "2000", "2010"],
+        correct: 1
+    },
+    {
+        question: "ದೇಶದಲ್ಲಿ ಮಹಿಳೆಯರ ಅಭಿವೃದ್ಧಿಗೆ ಸಂಬಂಧಿಸಿದ ಯೋಜನೆ ಯಾವುದು?",
+        options: ["ಜೀವನಾನಂದ ಯೋಜನೆ", "ಅತಿರೇಕ ಯೋಜನೆ", "ಮಹಿಳಾ ವಿದ್ಯಾಭ್ಯಾಸ ಯೋಜನೆ", "ದಿವ್ಯಂಗ ಸಮೃದ್ಧಿ ಯೋಜನೆ"],
+        correct: 2
+    },
+    {
+        question: "ಭಾರತದ ಬಂಡವಾಳ ಸಮಿತಿಯು ಯಾವ ಸ್ಥಳದಲ್ಲಿ ಇದೆ?",
+        options: ["ನವದೆಹಲಿ", "ಮುಂಬೈ", "ಕೋಲ್ಕತ್ತಾ", "ಹೈದರಾಬಾದ್"],
+        correct: 1
+    },
+    {
+        question: "ಭಾರತದಲ್ಲಿ ವಿದ್ಯುತ್ ಉತ್ಪಾದನೆಗೆ ಪ್ರಮುಖ ನದಿಗಳಲ್ಲಿ ಯಾವುದು?",
+        options: ["ಗಂಗಾ", "ಕಾವೇರಿ", "ಯಮುನಾ", "ನರ್ಮದಾ"],
+        correct: 0
+    },
+    {
+        question: "ಭಾರತದಲ್ಲಿ ಗಣಕಯಂತ್ರಗಳ ಅಭಿವೃದ್ಧಿಗೆ ಪ್ರಾರಂಭವಾದ ಕಂಪನಿಯ ಹೆಸರು ಏನು?",
+        options: ["ಐಬಿಎಂ", "ಟೆಕಾ", "ಡೆಲ್", "ಓರಾಕಲ್"],
+        correct: 0
+    },
+    {
+        question: "ಭಾರತದಲ್ಲಿ ಏಕಕಾಲದಲ್ಲಿ ಮುಖ್ಯಮಂತ್ರಿ ಆಗಿದ್ದ ರಾಷ್ಟ್ರಪತಿ ಯಾರು?",
+        options: ["ಕೋವಿ ನೆನಪೇ", "ಜಗಜೀvan ರಾಮ್", "ರಾಜೇಂದ್ರ ಪ್ರಸಾದ್", "ಕೃಷ್ಣಮೂರ್ತಿ"],
+        correct: 1
+    },
+    {
+        question: "ಭಾರತದಲ್ಲಿ ಪತ್ನಿಯ ಹಕ್ಕುಗಳನ್ನು ಜಾಗೃತಗೊಳಿಸಲು ಯಾವ ಯೋಜನೆಯು ಪ್ರಾರಂಭವಾಗಿದೆ?",
+        options: ["ನಾಗರಿಕ ಅರಿವು", "ಮಹಿಳಾ ಅಭಿವೃದ್ಧಿ ಯೋಜನೆ", "ಪತ್ನಿಯ ಹಕ್ಕುಗಳು", "ಮಹಿಳಾ ಸಮಾನತೆ"],
+        correct: 1
+    },
+    {
+        question: "ಭಾರತದಲ್ಲಿ ಆದಾಯ ತೆರಿಗೆ ಯಾವ ಸಂಸ್ಥೆ ದ್ವಾರಾ ಸಂಗ್ರಹಿಸಲಾಗುತ್ತದೆ?",
+        options: ["ಆಯುರ್ ವೀಜ್ಞಾನ", "ಹೆಚ್ಚಿನ ಆದಾಯ ತೆರಿಗೆ", "ಆದಾಯ ತೆರಿಗೆ ಇಲಾಖೆ", "ಬ್ಯಾಂಕ್"],
+        correct: 2
+    },
+    {
+        question: "ಭಾರತದಲ್ಲಿ ರಾಜಕೀಯ ಪಕ್ಷಗಳಿಗೆ ಸಂಬಂಧಿಸಿದ ಕಾನೂನು ಯಾವುದು?",
+        options: ["ಆಚಾರ ಸಂಹಿತಾ", "ಭದ್ರತಾ ಕಾಯ್ದೆ", "ಆಯ್ಕೆ ಕಾನೂನು", "ಭದ್ರತಾ ಆಯೋಗ"],
+        correct: 0
+    },
+    {
+        question: "ಭಾರತದಲ್ಲಿ ಮಹಿಳಾ ಕ್ಷಮತೆಯ ಅಭಿವೃದ್ಧಿಗಾಗಿ ಯೋಜನೆ ಯಾವುದು?",
+        options: ["ಆರ್ಥಿಕ ಸಮಾನತೆ ಯೋಜನೆ", "ಮಹಿಳಾ ಅಭಿವೃದ್ಧಿ ಯೋಜನೆ", "ಮಹಿಳಾ ಕಾರ್ಯನೀತಿ", "ದೀವಿಯ ಅಂಗಗಳು"],
+        correct: 1
+    },
+    {
+        question: "ಭಾರತದಲ್ಲಿ ನೀರಿನ ಮೂಲಗಳಿಗೆ ಸರ್ಕಾರವು ಯಾವ ಯೋಜನೆಯ ಮೂಲಕ ನೀರಿನ ನಿರ್ವಹಣೆಯನ್ನು ನಿಭಾಯಿಸುತ್ತದೆ?",
+        options: ["ಜಲ ಸಂಕಲನ ಯೋಜನೆ", "ನೀರಿನ ಅಭಿವೃದ್ಧಿ ಯೋಜನೆ", "ಜಲ ಜೀವನ ಯೋಜನೆ", "ಜಲ ಅಭಿವೃದ್ದಿ ಯೋಜನೆ"],
+        correct: 3
+    },
+    {
+        question: "ಭಾರತದಲ್ಲಿ ಆರಂಭಿಕ ಶಿಕ್ಷಣವನ್ನು ಒದಗಿಸಲು ಯಾವ ಯೋಜನೆಯು ಪ್ರಾರಂಭವಾಯಿತು?",
+        options: ["ಬಾಲಕೃಷಿ ಯೋಜನೆ", "ಪೂರ್ಣ ಕಾಲದ ಶಿಕ್ಷಣ ಯೋಜನೆ", "ಅಂಗನವಾಡಿ ಯೋಜನೆ", "ಬಾಲ ಅಭಿವೃದ್ಧಿ ಯೋಜನೆ"],
+        correct: 2
+    },
+    {
+        question: "ಭಾರತದಲ್ಲಿ ಗ್ರಾಮೀಣ ಪ್ರದೇಶದಲ್ಲಿ ನೀರಿನ ಶುದ್ಧಿಕರಣಕ್ಕೆ ಯಾವ ಯೋಜನೆಯು ಕಾರ್ಯಗತಗೊಳ್ಳುತ್ತದೆ?",
+        options: ["ನೀರು ಶುದ್ಧೀಕರಣ ಯೋಜನೆ", "ಗ್ರಾಮೀಣ ನೀರಿನ ಅಭಿವೃದ್ಧಿ", "ಜಲಕಾವರಿ ಯೋಜನೆ", "ನೀರು ಮತ್ತು ಆರೋಗ್ಯ ಯೋಜನೆ"],
+        correct: 1
+    },
+    {
+        question: "ಭಾರತದ ಪ್ರಧಾನ ಮಂತ್ರಿಯಾಗಿ ಸೇವೆ ಸಲ್ಲಿಸಿರುವ ಮೊದಲ ವ್ಯಕ್ತಿ ಯಾರು?",
+        options: ["ಜವಾಹರ್‌ಲಾಲ್ ನೆಹರೂ", "ಲಾಲ ಬಹದ್ದೂರ್ ಶಾಸ್ತ್ರಿ", "ಇಂಡಿರಾ ಗಾಂಧಿ", "ಆರ್ಟ್ ಸಿಂಗ್"],
+        correct: 0
+    },
+    {
+        question: "ಭಾರತದಲ್ಲಿ ರಾಜ್ಯಸಭೆ ಯಾವ ವರ್ಷದಲ್ಲಿ ಸ್ಥಾಪಿತವಾಯಿತು?",
+        options: ["1947", "1952", "1950", "1951"],
+        correct: 2
+    },
+    {
+        question: "ಭಾರತದಲ್ಲಿ ಕಾನೂನುಗೋಷ್ಟಿಗೆ ಸೂಕ್ತವಾಗಿ ಮಹಿಳೆಯರಿಗೆ ಉತ್ತಮ ಸ್ಥಾನಮಾನ ನೀಡಲು ಯಾವ ಕಾರ್ಯಕ್ರಮವಿದೆ?",
+        options: ["ನ್ಯಾಯಾಲಯ", "ಕಾನೂನಿನ ಸುಧಾರಣೆ", "ಮಹಿಳಾ ಕಾನೂನು", "ಗಂಡು-ಮಹಿಳಾ ಕಾನೂನು"],
+        correct: 2
+    },
+    {
+        question: "ಭಾರತದ ಸುಪ್ರಿಂ ಕೋರ್ಟ್‌ನಲ್ಲಿ ಮುಖ್ಯ ನ್ಯಾಯಮೂರ್ತಿ ಯಾರು?",
+        options: ["ನವನೀತ್ ಕುಮಾರ್", "ಎಸ್.ಎಲ್. ಭಾಯ್", "ನಂದೀನ್ ಶರ್ಮಾ", "ಡಾ. ಜೆ. ಎಸ್. ಕೌಶಿಕ್"],
+        correct: 1
+    },
+    {
+        question: "ಭಾರತದಲ್ಲಿ 'ಏಕತಾ' ಎಂಬ ಯೋಜನೆಯು ಯಾವ ಕ್ಷೇತ್ರದಲ್ಲಿ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತದೆ?",
+        options: ["ಆರೋಗ್ಯ", "ಶಿಕ್ಷಣ", "ಸಾಂಸ್ಕೃತಿಕ", "ಅರ್ಥಶಾಸ್ತ್ರ"],
+        correct: 2
+    },
+    {
+        question: "ಭಾರತದಲ್ಲಿ ಮಹಿಳಾ ರಾಷ್ಟ್ರೀಯ ಆರ್ಥಿಕ ಅಭಿವೃದ್ಧಿಗೆ ಏನನ್ನು ಸೇರಿಸಲಾಗುತ್ತದೆ?",
+        options: ["ನಗದು", "ಆರ್ಥಿಕ ಸಮಾನತೆ", "ನಿವೇಶ", "ಬೆಳೆ"],
+        correct: 0
+    },
+    {
+        question: "ಭಾರತದಲ್ಲಿ ರೈತರ ಅಭಿವೃದ್ಧಿಗಾಗಿ ಯಾವ ಯೋಜನೆಯು ಆರಂಭವಾಗಿದೆ?",
+        options: ["ಕೃಷಿ ಅಭಿವೃದ್ಧಿ ಯೋಜನೆ", "ಗ್ರಾಮೀಣ ಅಭಿವೃದ್ಧಿ ಯೋಜನೆ", "ರೈತ ಅಭಿವೃದ್ಧಿ ಯೋಜನೆ", "ದೇಶಾದ್ಯಾಂತ ರೈತ ಯೋಜನೆ"],
+        correct: 0
+    },
+    {
+        question: "ಭಾರತದಲ್ಲಿ ಕೈಗಾರಿಕೆ ಅಭಿವೃದ್ಧಿಗೆ ಏನೆಂದು ಕರೆಯಲಾಗುತ್ತದೆ?",
+        options: ["ದೇಶಾದ್ಯಾಂತ ಕೈಗಾರಿಕೆ", "ಚಾಲನೆ", "ಕೃಷಿ ಕೈಗಾರಿಕೆ", "ಭದ್ರತಾ ಕೈಗಾರಿಕೆ"],
+        correct: 0
+    },
+    {
+        question: "ಭಾರತದಲ್ಲಿ ಸ್ವಾವಲಂಬನಕ್ಕೆ ಪ್ರೇರಕವಾದ ಕಾರ್ಯಕ್ರಮ ಯಾವುದು?",
+        options: ["ಆರ್ಥಿಕ ಸಬ್ಸಿಡಿ", "ಬ್ಯಾಂಕಿಂಗ್ ಯೋಜನೆ", "ರೈತ ಮತ್ತು ಕಾರ್ಯನೀತಿ", "ನಿವೇಶ"],
+        correct: 1
+    },
+    {
+        question: "ಭಾರತದಲ್ಲಿ ಆರ್ಥಿಕ ಬೆಳವಣಿಗೆಗೆ ಸಂಬಂಧಿಸಿದಂತೆ ಪ್ರಥಮ ವಿತ್ತ ಸಚಿವರ ಹೆಸರು ಏನು?",
+        options: ["ರಾಜೇಂದ್ರ ಪ್ರಸಾದ್", "ನರೇಂದ್ರ ಮೋದಿ", "ರಾಮ್ ಮಣೋಹರ್ ಲೋಹಿಯಾ", "ಬಿ.ಆರ್. ಅಂಬೇಡ್ಕರ್"],
+        correct: 2
+    },
+    {
+        question: "ಭಾರತದಲ್ಲಿ ಅಹಿಂಸಾ ಪರಿಕಲ್ಪನೆಯ ಸಂಪೂರ್ಣ ಪರಿಕಲ್ಪನೆಯು ಯಾರಿಂದ ರೂಪುಗೊಳ್ಳುತ್ತದೆ?",
+        options: ["ಗಾಂಧೀಜಿ", "ನೇಹರೂ", "ಅಂಬೇಡ್ಕರ್", "ಪಟೇಲ್"],
+        correct: 0
+    },
+    {
+        question: "ಭಾರತದಲ್ಲಿ ದೇಶೀಯ ಉಳಿತಾಯವನ್ನು ಹೆಚ್ಚಿಸಲು ಯಾವ ಯೋಜನೆಯು ರೂಪಿಸಲಾಗಿದೆ?",
+        options: ["ಮಿಡಿಯಾಯನು", "ಆರ್ಥಿಕ ಸಮಾನತೆ", "ಖಾತಾ ವ್ಯವಸ್ಥೆ", "ಕೃಷಿ ಯೋಜನೆ"],
+        correct: 1
+    },
+    {
+        question: "ಭಾರತದಲ್ಲಿ ಅಧಿಕಾರ ಸ್ರೋತವನ್ನು ನಿರ್ಧಾರಗೊಳ್ಳುವ ವಿಧಾನ ಯಾವುದು?",
+        options: ["ರಾಜಕೀಯ", "ನ್ಯಾಯಾಂಗ", "ಅನ್ವಯ", "ಅರ್ಥಶಾಸ್ತ್ರ"],
+        correct: 0
+    },
+    {
+        question: "ಭಾರತದಲ್ಲಿ ಮುಖ್ಯ ಮೀನುಗಾರಿಕೆಯ ಯೋಜನೆಯು ಯಾವಾಗ ಆರಂಭವಾಯಿತು?",
+        options: ["1970", "1980", "1990", "2000"],
+        correct: 1
+    },
+    {
+        question: "ಭಾರತದಲ್ಲಿ ರಾಷ್ಟ್ರೀಯ ಆರೋಗ್ಯ ಯೋಜನೆಯು ಯಾವ ವರ್ಷದಲ್ಲಿ ಪ್ರಾರಂಭವಾಯಿತು?",
+        options: ["2001", "2005", "2010", "2015"],
+        correct: 1
+    },
+    {
+        question: "ಭಾರತದಲ್ಲಿ ಪ್ರಥಮ ಮಾಹಿತಿ ತಂತ್ರಜ್ಞಾನ ಹಬ್ಬ ಯಾವಾಗ ನಡೆಯಿತು?",
+        options: ["1990", "1995", "2000", "2005"],
+        correct: 1
+    },
+    {
+        question: "ಭಾರತದಲ್ಲಿ ಶ್ರೇಣಿಯ ಅತಿಯಾದ ಸದಸ್ಯರೂ, ಚುನಾವಣಾ ಆಯೋಗದ ಅಧ್ಯಕ್ಷರೇ ಯಾರು?",
+        options: ["ಆರ್.ಎಲ್. ನಿಗಮ್", "ಸಿ.ಆರ್. ಸ್ವಾಮಿ", "ಎಮ್.ಆರ್. ಷರ್ಮಾ", "ಜಗದೀಶ್ ಭಟ್"],
+        correct: 0
+    },
+    {
+        question: "ಭಾರತದಲ್ಲಿ ದೇಶೀಯ ಉತ್ಪನ್ನದ ಒತ್ತಣವನ್ನು ಏನು ಪ್ರಾತಿನಿಧಿಸುತ್ತದೆ?",
+        options: ["ವಿಕಾಸ", "ಅರ್ಥಶಾಸ್ತ್ರ", "ಸಾಮಾಜಿಕ ಉಳಿತಾಯ", "ಅದಾನ"],
+        correct: 0
+    },
+    {
+        question: "ಭಾರತದಲ್ಲಿ ಯುವಜನತೆಯ ಉತ್ಸಾಹವನ್ನು ಉತ್ತೇಜಿಸಲು ಯಾವ ಯೋಜನೆಯು ರೂಪಿಸಲಾಗಿದೆ?",
+        options: ["ಯುವಾ ಭಾರತ ಯೋಜನೆ", "ದೇಶಿ ಯುವ ವೇದಿಕೆ", "ಯುವಜನರ ಉತ್ಸಾಹ", "ಬುದ್ಧಿವಂತ ಯುವ ಜನ"],
+        correct: 0
+    }
+];
+
+    // Function to shuffle the questions
+    function shuffleQuestions(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    // Shuffle and select 3 random questions
+    let shuffledQuizData = shuffleQuestions(quizData).slice(0, 25);<!--to choose the random question-->
+    
+    let currentQuestion = 0;
+    let score = 0;
+    let timer;
+    let timeLeft = 30;
+
+    function loadQuestion() {
+        const questionData = shuffledQuizData[currentQuestion];
+        document.getElementById('question-text').textContent = questionData.question;
+
+        const optionGroup = document.getElementById('option-group');
+        optionGroup.innerHTML = '';
+
+        questionData.options.forEach((option, index) => {
+            const optionHTML = `
+                <input type="radio" id="option${index}" name="option" value="${index}">
+                <label for="option${index}">${option}</label>
+            `;
+            optionGroup.innerHTML += optionHTML;
+        });
+
+        // Reset button state
+        document.getElementById('next-btn').disabled = true;
+        document.getElementById('timer').textContent = '30s';
+        timeLeft = 30;
+
+        // Add event listener for selecting an option
+        document.querySelectorAll('input[name="option"]').forEach(input => {
+            input.addEventListener('change', function () {
+                enableNextButton();
+            });
+        });
+
+        // Update progress bar
+        const progressPercentage = ((currentQuestion + 1) / shuffledQuizData.length) * 100;
+        document.getElementById('progress-bar').style.width = progressPercentage + '%';
+
+        // Start timer
+        startTimer();
+    }
+
+    function enableNextButton() {
+        document.getElementById('next-btn').disabled = false;
+    }
+
+    function startTimer() {
+        timer = setInterval(function () {
+            timeLeft--;
+            document.getElementById('timer').textContent = timeLeft + 's';
+
+            if (timeLeft <= 0) {
+                skipQuestion();
+            }
+        }, 1000);
+    }
+
+    function stopTimer() {
+        clearInterval(timer);
+    }
+
+    function nextQuestion() {
+        // Check if the selected answer is correct
+        const selectedOption = document.querySelector('input[name="option"]:checked');
+        if (selectedOption) {
+            const answer = parseInt(selectedOption.value);
+            if (answer === shuffledQuizData[currentQuestion].correct) {
+                score++; // Increment score if the answer is correct
+            }
+        }
+
+        // Stop the timer and move to the next question
+        stopTimer();
+        currentQuestion++;
+
+        if (currentQuestion < shuffledQuizData.length) {
+            loadQuestion();
+        } else {
+            showResults();
+        }
+    }
+
+    function skipQuestion() {
+        stopTimer();
+        nextQuestion();
+    }
+
+    function showResults() {
+        document.querySelector('.quiz-container').innerHTML = `
+            <h1>Quiz Completed!</h1>
+            <p>Your score: ${score} / ${25}</p>
+            <button class="submit-btn" onclick="restartQuiz()">Restart Quiz</button>
+            <button class="submit-btn" onclick="goToMainPage()">Go to Main Page</button>
+            <button class="submit-btn" onclick="showanswers()">Correct answers</button>
+        `;
+    }
+    function showanswers() {
+        let resultHTML = `<h1>Correct Answers</h1>`;
+        
+        quizData.forEach((data, index) => {
+            resultHTML += `<div class="question-result">
+                <p><strong> ${data.question}</strong></p>
+                <p><span style="color: green;">Correct Answer: ${data.options[data.correct]}</span></p>
+            </div><hr>`;
+        });
+    
+        resultHTML += `<button class="submit-btn" onclick="restartQuiz()">Restart Quiz</button>
+                       <button class="submit-btn" onclick="goToMainPage()">Go to Main Page</button>`;
+    
+        document.querySelector('.quiz-container').innerHTML = resultHTML;
+    
+    
+
+        if (!resultHTML.includes('<div class="question-result">')) {
+            resultHTML += `<p>Great job! You answered all questions correctly!</p>`;
+        }
+    }
+
+    function restartQuiz() {
+        location.href = 'kas-kannada-quiz.html'; 
+    }
+
+    function goToMainPage() {
+        location.href = 'index.html'; // Replace 'index.html' with the URL of the main page
+    }
+
+    // Load the first question when the page loads
+    window.onload = loadQuestion;
+    
+</script>
+
+</body>
+</html>

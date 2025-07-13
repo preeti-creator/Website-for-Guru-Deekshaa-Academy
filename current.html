@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KAS Study Materials</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 1.8em;
+        }
+
+        /* Content Container */
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* PDF List Styles */
+        .pdf-list {
+            margin-top: 20px;
+            padding: 0;
+            list-style: none;
+        }
+        .pdf-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .pdf-item:hover {
+            background-color: #e8e8e8;
+        }
+        .pdf-item a {
+            text-decoration: none;
+            color: #007BFF;
+            font-weight: bold;
+        }
+        .pdf-item a:hover {
+            text-decoration: underline;
+        }
+        .pdf-item button {
+            padding: 5px 10px;
+            font-size: 0.9em;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .pdf-item button:hover {
+            background-color: #45a049;
+        }
+
+        /* PDF Viewer Section */
+        iframe {
+            width: 100%;
+            height: 500px;
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Current Affairs</h1>
+    </header>
+
+    <div class="container">
+       
+        
+        <ul class="pdf-list">
+            <li class="pdf-item">
+                <a href="15th September current affairs_af68dbb9-ff8e-4297-8ea1-13f78aed56c3 (1).pdf" target="pdf-frame">15th September</a>
+                <button onclick="downloadPDF('15th September current affairs_af68dbb9-ff8e-4297-8ea1-13f78aed56c3 (1).pdf')">Download</button>
+            </li>
+            <li class="pdf-item">
+                <a href="16th September Kannada current affairs_824b3f55-7ccd-424a-998e-ae6487fb3a58.pdf" target="pdf-frame">16th September</a>
+                <button onclick="downloadPDF('16th September Kannada current affairs_824b3f55-7ccd-424a-998e-ae6487fb3a58.pdf')">Download</button>
+            </li>
+            <li class="pdf-item">
+                <a href="20th September Kannada current affairs_04f29f8a-4566-4a83-97bd-b1d22ded8172.pdf" target="pdf-frame">20th September</a>
+                <button onclick="downloadPDF('20th September Kannada current affairs_04f29f8a-4566-4a83-97bd-b1d22ded8172.pdf')">Download</button>
+            </li>
+            <li class="pdf-item">
+                <a href="19th September Kannada current affairs_93c38fee-5fbc-4665-8b69-1b5bec6c81dc.pdf" target="pdf-frame">19th September</a>
+                <button onclick="downloadPDF('19th September Kannada current affairs_93c38fee-5fbc-4665-8b69-1b5bec6c81dc.pdf')">Download</button>
+            </li>
+            <li class="pdf-item">
+                <a href="13th September current affairs_f51d3f71-9bff-43d8-bc08-d3cd0e7602ad.pdf" target="pdf-frame">13th September</a>
+                <button onclick="downloadPDF('13th September current affairs_f51d3f71-9bff-43d8-bc08-d3cd0e7602ad.pdf')">Download</button>
+            </li>
+            <li class="pdf-item">
+                <a href="12th September current affairs_6fe97f0a-a698-4ff7-a702-4c3c4ce79e5b.pdf" target="pdf-frame">Science</a>
+                <button onclick="downloadPDF('12th September current affairs_6fe97f0a-a698-4ff7-a702-4c3c4ce79e5b.pdf')">Download</button>
+            </li>
+        </ul>
+
+        <h2>Read the PDF here:</h2>
+        <iframe id="pdf-frame" src="" title="PDF Viewer"></iframe>
+    </div>
+
+    <footer>
+        &copy; 2024 Guru Deekshaa Academy| All rights reserved.
+        </footer>
+
+    <script>
+        // Automatically load the selected PDF into the iframe
+        const links = document.querySelectorAll('.pdf-item a[target="pdf-frame"]');
+        const iframe = document.getElementById('pdf-frame');
+
+        links.forEach(link => {
+            link.addEventListener('click', event => {
+                event.preventDefault();
+                iframe.src = event.target.href;
+            });
+        });
+
+        // Function to download PDFs
+        function downloadPDF(pdfFile) {
+            const a = document.createElement('a');
+            a.href = pdfFile;
+            a.download = pdfFile;
+            a.click();
+        }
+    </script>
+</body>
+</html>
